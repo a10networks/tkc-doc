@@ -2,14 +2,14 @@
 
 ## Table of Contents
 1. [Overview](#Overview)
-2. [Directories Information](#Directories Information)
+2. [Directories](#Directories)
 
 ## Overview
 
 The A10 Networks Thunder Kubernetes Connector Documents (i.e. tkc-doc) provides CRD definitions, chart packages, tools and other useful documents for end-users.
 
 
-## Directories Information
+## Directories
 
 ```
 | Directory              | Summary                                        |
