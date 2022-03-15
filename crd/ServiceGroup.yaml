@@ -1,0 +1,100 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: servicegroups.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  scope: Namespaced
+  names:
+    plural: servicegroups
+    singular: servicegroup
+    kind: ServiceGroup
+    shortNames:
+    - a10sg
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          metadata:
+            type: object
+            properties:
+              name:
+                type: string
+          spec:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 127
+                description: "Specify the service-group name"
+              service:
+                type: string
+                description: "Specify k8s service that bind to the service-group"
+              protocol:
+                type: string
+                enum:
+                - tcp
+                - udp
+                default: "tcp"
+                description: "Specify the service-group protocol"
+              healthCheck:
+                type: string
+                minLength: 1
+                maxLength: 63
+                description: "Specify the health monitor for the service-group"
+              healthCheckDisable:
+                type: integer
+                minimum: 0
+                maximum: 1
+                default: 0
+                description: "Disable health monitor for the service-group"
+              loadBalanceMethod:
+                type: string
+                enum:
+                - dst-ip-hash
+                - dst-ip-only-hash
+                - fastest-response
+                - least-request
+                - src-ip-hash
+                - src-ip-only-hash
+                - weighted-rr
+                - service-weighted-rr
+                - round-robin
+                - round-robin-strict
+                - odd-even-hash
+                default: "round-robin"
+                description: "Specify the loadbalance method for the service-group"
+              serverHealthCheck:
+                type: string
+                minLength: 1
+                maxLength: 63
+                description: "Specify the health monitor for the servers in this service-group"
+              status:
+                type: string
+                default: "NoController"
+            required:
+              - name
+              - service
+    additionalPrinterColumns:
+    - name: name
+      type: string
+      description: The service-group Name
+      jsonPath: .spec.name
+    - name: status
+      type: string
+      jsonPath: .spec.status
+    - name: service
+      type: string
+      jsonPath: .spec.service
+    - name: protocol
+      type: string
+      jsonPath: .spec.protocol
+    - name: method
+      type: string
+      jsonPath: .spec.loadBalanceMethod
+

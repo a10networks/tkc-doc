@@ -1,0 +1,201 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: virtualports.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  scope: Namespaced
+  names:
+    kind: VirtualPort
+    plural: virtualports
+    singular: virtualport
+    shortNames:
+      - a10vport
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                name:
+                  type: string
+            spec:
+              type: object
+              properties:
+                virtualServer:
+                  type: string
+                  description: "Specify the virtual-server name for the virtual-port"
+                port:
+                  type: integer
+                  minimum: 0
+                  maximum: 65534
+                  description: "Specify port number for the virtual-port"
+                protocol:
+                  type: string
+                  enum:
+                  - tcp
+                  - udp
+                  - others
+                  - diameter
+                  - dns-tcp
+                  - dns-udp
+                  - fast-http
+                  - fix
+                  - ftp
+                  - ftp-proxy
+                  - http
+                  - https
+                  - imap
+                  - mlb
+                  - mms
+                  - mysql
+                  - mssql
+                  - pop3
+                  - radius
+                  - rtsp
+                  - sip
+                  - sip-tcp
+                  - sips
+                  - smpp-tcp
+                  - spdy
+                  - mqtt
+                  - mqtts
+                  - ssl-proxy
+                  - ssli
+                  - ssh
+                  - tcp-proxy
+                  - tftp
+                  - fast-fix
+                  description: "Specify the virtual-port protocol type"
+                ingress:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: "Specify the Ingress that bind to this virtual-port"
+                ocRoute:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: "Specify the Route (in OpenShift) that bind to this virtual-port"
+                action:
+                  type: string
+                  description: "Enable or Disable the virtual-port"
+                  enum:
+                  - enable
+                  - disable
+                http2:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  description: "Support HTTP2"
+                aflex:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      script:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: "Specify the aflex script for the virtual-port"
+                snatPool:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: "Specify Source NAT pool or pool group"
+                snatAuto:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  description: "Configure auto Source NAT for the vport"
+                serviceGroup:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the service-group for the virtual-port. If not specified,  TKC will use the service-group that bind to the service"
+                serverSslTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the server-ssl template for the virtual-port"
+                clientSslTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the client-ssl template for the virtual-port"
+                policyTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the policy template for the virtual-port"
+                httpTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the http template for the virtual-port"
+                httpPolicyTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the http-policy template for the virtual-port"
+                virtualPortTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the virtual-port template for the virtual-port"
+                tcpTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the tcp template for the virtual-port"
+                tcpProxyTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the tcp-proxy template for the virtual-port"
+                noDestNat:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  description: "Disable destination NAT, this option only supports in wildcard VIP or when a connection is operated in SSLi + EP mode"
+                portTranslation:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  description: "Enable port translation under no-dest-nat"
+                userTag:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Customized tag for virtual-port"
+                status:
+                  type: string
+                  default: "NoController"
+              required:
+                - virtualServer
+                - port
+                - protocol
+      additionalPrinterColumns:
+      - name: port
+        type: integer
+        jsonPath: .spec.port
+      - name: protocol
+        type: string
+        jsonPath: .spec.protocol
+      - name: status
+        type: string
+        jsonPath: .spec.status
+      - name: virtualServer
+        type: string
+        jsonPath: .spec.virtualServer
+      - name: ingress
+        type: string
+        jsonPath: .spec.ingress
+      - name: route
+        type: string
+        jsonPath: .spec.ocRoute

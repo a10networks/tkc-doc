@@ -1,0 +1,91 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: natpools.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  scope: Namespaced
+  names:
+    plural: natpools
+    singular: natpool
+    kind: NatPool
+    shortNames:
+    - a10natpool
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          metadata:
+            type: object
+            properties:
+              name:
+                type: string
+          spec:
+            type: object
+            properties:
+              poolName:
+                type: string
+                minLength: 1
+                maxLength: 63
+                description: "Specify the pool name"
+              startAddress:
+                type: string
+                pattern: "^[0-9]+.[0-9]+.[0-9]+.[0-9]+$"
+                description: "Specify the NAT pool start address"
+              endAddress:
+                type: string
+                pattern: "^[0-9]+.[0-9]+.[0-9]+.[0-9]+$"
+                description: "Specify the NAT pool end address"
+              netmask:
+                type: string
+                pattern: "^/[0-9]+$"
+                description: "Specify the NAT pool netmask"
+              gateway:
+                type: string
+                description: "Specify the gateway for the NAT pool"
+              ipRr:
+                type: boolean
+                description: "NAT Pool will use IP address round-robin behavior"
+              portOverload:
+                type: boolean
+                description: "Enable Nat Pool Port overload"
+              vrid:
+                type: integer
+                minimum: 0
+                maximum: 31
+               description: "Configure VRRP-A vrid for the NAT pool"
+              status:
+                type: string
+                default: "NoController"
+            required:
+              - poolName
+              - startAddress
+              - endAddress
+              - netmask
+    additionalPrinterColumns:
+    - name: pool
+      type: string
+      description: The nat-pool name
+      jsonPath: .spec.poolName
+    - name: status
+      type: string
+      jsonPath: .spec.status
+    - name: start
+      type: string
+      description: The start address of the nat-pool
+      jsonPath: .spec.startAddress
+    - name: end
+      type: string
+      description: The end address of the nat-pool
+      jsonPath: .spec.endAddress
+    - name: netmask
+      type: string
+      description: The netmask for the nat-pool
+      jsonPath: .spec.netmask
+    - name: Age
+      type: date
+      jsonPath: .metadata.creationTimestamp

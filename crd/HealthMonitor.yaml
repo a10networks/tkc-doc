@@ -1,0 +1,115 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: healthmonitors.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  scope: Namespaced
+  names:
+    plural: healthmonitors
+    singular: healthmonitor
+    kind: HealthMonitor
+    shortNames:
+    - a10hm
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          metadata:
+            type: object
+            properties:
+              name:
+                type: string
+          spec:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 63
+                description: "Specify health monitor name"
+              type:
+                type: string
+                enum:
+                - tcp
+                - http
+                - https
+                - icmp
+                description: "Specify health monitor protocol type"
+              port:
+                type: integer
+                minimum: 0
+                maximum: 65535
+                description: "Specify health monitor port number"
+              retry:
+                type: integer
+                minimum: 1
+                maximum: 10
+                description: "Specify the max retry for health monitor"
+              interval:
+                type: integer
+                minimum: 1
+                maximum: 180
+                description: "Specify the retry intreval for health monitor"
+              timeout:
+                type: integer
+                minimum: 1
+                maximum: 180
+                description: "Specify the timeout for health monitor"
+              httpHost:
+                type: string
+                description: "Specify the Host for http/https health monitor"
+              httpUrl:
+                type: string
+                description: "Specify the URL for http/https health monitor"
+              httpMethod:
+                type: string
+                enum:
+                - GET
+                - HEAD
+                description: "Specify the method for http/https health monitor"
+              httpCode:
+                type: integer
+                minimum: 0
+                maximum: 1000
+                description: "Specify the expecting status code for http/https health monitor"
+              httpCodeRegex:
+                type: string
+                description: "Specify the expecting status code regular expression for http/https health monitor"
+              httpText:
+                type: string
+                description: "Specify the expecting response content for http/https health monitor"
+              httpTextRegex:
+                type: string
+                description: "Specify the expecting response content regular expression for http/https health monitor"
+              status:
+                type: string
+                default: "NoController"
+            required:
+              - name
+              - type
+    additionalPrinterColumns:
+    - name: name
+      type: string
+      description: The Health Monitor Name
+      jsonPath: .spec.name
+    - name: status
+      type: string
+      jsonPath: .spec.status
+    - name: type
+      type: string
+      description: The Health Monitor Type
+      jsonPath: .spec.type
+    - name: host
+      type: string
+      jsonPath: .spec.httpHost
+    - name: url
+      type: string
+      jsonPath: .spec.httpUrl
+    - name: code
+      type: integer
+      jsonPath: .spec.httpCode
