@@ -158,7 +158,7 @@ spec:
                     key:
                       type: string
                       description: Client private-key  secret name (Key Name)
-                  passphrase:
+                    passphrase:
                       type: string
                       description: Password Phrase
             status:
