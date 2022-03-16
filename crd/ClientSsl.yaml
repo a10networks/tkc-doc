@@ -1,0 +1,323 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+    name: clientssls.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Client SSL Template Name
+                cert:
+                  type: string
+                  description: Certificate Secret Name applicable for ACOS 4.x only as Kubernetes Secret
+                key:
+                  type: string
+                  description: Key Secret Name applicable for ACOS 4.x only
+                passphrase:
+                  type: string
+                  description: Password of encrypted key applicable for ACOS 4.x only  as Kubernetes Secret
+                ca-certs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        ca-cert:
+                          type: string
+                          description: Specify CA certificate secret name
+                        ca-shared :
+                          type: integer
+                          default: 0
+                          description: CA Certificate Partition Shared
+                        client-ocsp-srvr:
+                          type: string
+                          description: Specify authentication server
+                          minLength: 1
+                          maxLength: 63
+                        client-ocsp:
+                          type: integer
+                          default: 0
+                          description: Specify ocsp authentication server(s) for client certificate verification
+                        client-ocsp-sg:
+                          type: string
+                          minLength: 1
+                          maxLength: 127
+                          description: Specify service-group (Service group name)
+                chain-cert:
+                  type: string
+                  description: Chain Certificate Name stored as Kubernetes Secret
+
+                server-name-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        server-name:
+                          type: string
+                          minLength: 1
+                          maxLength: 63
+                          description: Server name indication in Client hello extension (Server name String)
+                        server-cert:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Server Certificate associated to SNI (Server Certificate Name)
+                        server-chain:
+                          type: string
+                          minLength: 1
+                          maxLength: 128
+                          description: Server Certificate Chain associated to SNI (Server Certificate Chain Name) stored as Kubernetes Secret
+                        server-key:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Server Private Key associated to SNI (Server Private Key Name) stored as Kubernetes Secret
+                        server-passphrase:
+                          type: string
+                          minLength: 1
+                          maxLength: 63
+                          description: help Password Phrase
+                        server-name-alternate:
+                          type: integer
+                          description: Specify the second certificate stored as Kubernetes Secret
+                        server-shared:
+                          type: integer
+                          description: Server Name Partition Shared
+                        server-name-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 63
+                          description: Server name indication in Client hello extension with regular expression (Server name String with regex)
+                        server-cert-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Server Certificate associated to SNI regex (Server Certificate Name)
+                        server-chain-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 128
+                          description: Server Certificate Chain associated to SNI regex (Server Certificate Chain Name)
+                        server-key-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Server Private Key associated to SNI regex (Server Private Key Name) stored as Kubernetes Secret
+                        server-passphrase-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 63
+                          description: help Password Phrase
+                        server-name-regex-alternate:
+                          type: integer
+                          default: 0
+                          description: Specifiy the second certificate
+                        server-shared-regex :
+                          type: integer
+                          default: 0
+                          description: Server Name Partition Shared
+                crl-certs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        crl:
+                          type: string
+                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) stored as Kubernetes Secret(type generic)
+                        crl-partition-shared:
+                          type: integer
+                          default: 0
+                          description: Certificate Revocation Lists Partition Shared
+                cipher-without-prio-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        cipher-wo-prio:
+                            type: string
+                            enum:
+                            - SSL3_RSA_DES_192_CBC3_SHA
+                            - SSL3_RSA_RC4_128_MD5
+                            - SSL3_RSA_RC4_128_SHA
+                            - TLS1_RSA_AES_128_SHA
+                            - TLS1_RSA_AES_256_SHA
+                            - TLS1_RSA_AES_128_SHA256
+                            - TLS1_RSA_AES_256_SHA256
+                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                            - TLS1_DHE_RSA_AES_128_SHA
+                            - TLS1_DHE_RSA_AES_128_SHA256
+                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                            - TLS1_DHE_RSA_AES_256_SHA
+                            - TLS1_DHE_RSA_AES_256_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_128_SHA
+                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_ECDSA_AES_256_SHA
+                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                            - TLS1_ECDHE_RSA_AES_128_SHA
+                            - TLS1_ECDHE_RSA_AES_128_SHA256
+                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_RSA_AES_256_SHA
+                            - TLS1_RSA_AES_128_GCM_SHA256
+                            - TLS1_RSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_RSA_AES_256_SHA384
+                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                dh-type:
+                  type: string
+                  enum:
+                  - 1024
+                  - 1024-dsa
+                  - 2048
+                ec-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ec:
+                        type: string
+                        enum:
+                        - secp256r1
+                        - secp384r1
+                close-notify:
+                  type: integer
+                  default: 0
+                local-logging:
+                  type: integer
+                  default: 0
+                  description: Enable local logging
+                version:
+                  type: integer
+                  minimum: 30
+                  maximum: 34
+                  default: 33
+                dgversion:
+                  type: integer
+                  minimum: 30
+                  maximum: 34
+                  default: 31
+                oscp-stapling:
+                  type: integer
+                  description: Config OCSP stapling support
+                  default: 0
+                ocspst-ocsp:
+                  type: integer
+                  default: 0
+                  description: Specify OCSP Authentication
+                renegotiation-disable:
+                  type: integer
+                  default: 0
+                session-cache-size:
+                  type: integer
+                  minimum: 0
+                  maximum: 128
+                  default: 0
+                session-cache-timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 7200
+                session-ticket-lifetime:
+                  type: integer
+                  minimum: 0
+                  maximum: 2147483647
+                  default: 0
+                  description: Session ticket lifetime in seconds from stateless session resumption
+                session-ticket-disable:
+                  type: integer
+                  default: 0
+                  description: Disable client side session ticket support
+                template-cipher:
+                  type: string
+                certificate:
+                  type: object
+                  properties:
+                    cert:
+                      type: string
+                      description: Certificate Secret Name
+                    key:
+                      type: string
+                      description: Client private-key (Key Name) Secret Name
+                    passphrase:
+                      type: string
+                      description: Password Phrase
+                server-name-auto-map:
+                  type: integer
+                  default: 0
+                  description: Enable automatic mapping of server name indication in Client hello extension
+                sni-enable-log:
+                  type: integer
+                  default: 0
+                  description: Enable logging of sni-auto-map failures. Disable by default
+                sni-bypass-missing-cert:
+                  type: integer
+                  default: 0
+                  description: Bypass when missing cert/key
+                sni-bypass-expired-cert:
+                  type: integer
+                  default: 0
+                  description: Bypass when certificate expired
+                sni-bypass-enable-log:
+                  type: integer
+                  default: 0
+                  description: Enable logging when bypass event happens, disabled by default
+                sni-bypass-explicit-list:
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+                  description: Bypass when matched explicit bypass list (Specify class list name)
+                disable-sslv3:
+                  type: integer
+                  default: 0
+                  description: Reject Client requests for SSL version 3
+                certificate-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        cert:
+                          type: string
+                          description: Certificate Name secret stored as Kubernetes Secret
+                        key:
+                          type: string
+                          description: Server Private Key (Key Name) stored as Kubernetes Secret
+                        passphrase:
+                          type: string
+                          description: Password Phrase
+                        chain-cert:
+                          type : string
+                          description: Chain Certificate (Chain Certificate Name) secret stored as Kubernetes Secret
+
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+
+      additionalPrinterColumns:
+      - name: Template Name
+        type: string
+        description: Client SSL template
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state
+
+  scope: Namespaced
+  names:
+    plural: clientssls
+    singular: clientssl
+    kind: ClientSsl
+
