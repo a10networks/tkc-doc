@@ -57,7 +57,7 @@ spec:
                 type: integer
                 minimum: 0
                 maximum: 31
-               description: "Configure VRRP-A vrid for the NAT pool"
+                description: "Configure VRRP-A vrid for the NAT pool"
               status:
                 type: string
                 default: "NoController"
