@@ -195,4 +195,5 @@ spec:
     plural: serverssls
     singular: serverssl
     kind: ServerSsl
-
+    shortNames:
+    - a10srvssl
