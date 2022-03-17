@@ -30,7 +30,7 @@ spec:
               properties:
                 state:
                   type: string
-                  default: no controller
+                  default: NoController
       additionalPrinterColumns:
       - name: Name
         type: string
