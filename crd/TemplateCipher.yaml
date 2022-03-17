@@ -66,6 +66,7 @@ spec:
                         description: "Specify the cipher-suite name"
                       priority:
                         type: integer
+                        default: 1
                         description: "Specify the priority for this cipher-suite"
                 cipher13-cfg:
                   type: array
