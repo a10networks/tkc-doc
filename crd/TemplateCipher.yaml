@@ -1,0 +1,100 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templateciphers.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                user-tag:
+                  type: string
+                cipher-cfg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cipher-suite:
+                        type: string
+                        enum:
+                        - SSL3_RSA_DES_192_CBC3_SHA
+                        - SSL3_RSA_RC4_128_MD5
+                        - SSL3_RSA_RC4_128_SHA
+                        - TLS1_RSA_AES_128_SHA
+                        - TLS1_RSA_AES_256_SHA
+                        - TLS1_RSA_AES_128_SHA256
+                        - TLS1_RSA_AES_256_SHA256
+                        - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                        - TLS1_DHE_RSA_AES_128_SHA
+                        - TLS1_DHE_RSA_AES_128_SHA256
+                        - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                        - TLS1_DHE_RSA_AES_256_SHA
+                        - TLS1_DHE_RSA_AES_256_SHA256
+                        - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                        - TLS1_ECDHE_ECDSA_AES_128_SHA
+                        - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                        - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                        - TLS1_ECDHE_ECDSA_AES_256_SHA
+                        - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                        - TLS1_ECDHE_RSA_AES_128_SHA
+                        - TLS1_ECDHE_RSA_AES_128_SHA256
+                        - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                        - TLS1_ECDHE_RSA_AES_256_SHA
+                        - TLS1_RSA_AES_128_GCM_SHA256
+                        - TLS1_RSA_AES_256_GCM_SHA384
+                        - TLS1_ECDHE_RSA_AES_256_SHA384
+                        - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                        - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                        - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                        - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                        - TLS1_ECDHE_SM2_WITH_SMS4_SM3
+                        - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
+                        - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
+                      priority:
+                        type: integer
+                cipher13-cfg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cipher13-suite:
+                        type: string
+                        enum:
+                        - TLS_AES_256_GCM_SHA384
+                        - TLS_CHACHA20_POLY1305_SHA256
+                        - TLS_AES_128_GCM_SHA256
+                      priority:
+                        type: integer
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: Name
+        type: string
+        description: Template Cipher Name
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state
+  scope: Namespaced
+  names:
+    plural: templateciphers
+    singular: templatecipher
+    kind: TemplateCipher
+    shortNames:
+    - a10tc

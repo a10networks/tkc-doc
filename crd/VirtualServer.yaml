@@ -48,5 +48,5 @@ spec:
     plural: virtualservers
     singular: virtualserver
     shortNames:
-    - a10slbvs
+    - a10vip
   scope: Namespaced
