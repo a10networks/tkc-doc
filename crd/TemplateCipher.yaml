@@ -83,6 +83,7 @@ spec:
               properties:
                 state:
                   type: string
+                  default: NoController
       additionalPrinterColumns:
       - name: Name
         type: string
