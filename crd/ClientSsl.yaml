@@ -20,13 +20,16 @@ spec:
                   description: Client SSL Template Name
                 cert:
                   type: string
-                  description: Certificate Secret Name applicable for ACOS 4.x only as Kubernetes Secret
+                  description: Certificate Secret Name applicable only as Kubernetes Secret
+                chain-cert:
+                  type: string
+                  description: Chain Certificate Name stored as Kubernetes Secret  
                 key:
                   type: string
-                  description: Key Secret Name applicable for ACOS 4.x only
+                  description: Key Secret Name applicable  as Kubernetes Secret
                 passphrase:
                   type: string
-                  description: Password of encrypted key applicable for ACOS 4.x only  as Kubernetes Secret
+                  description: Password of encrypted key 
                 ca-certs:
                   type: array
                   items:
@@ -41,22 +44,19 @@ spec:
                           description: CA Certificate Partition Shared
                         client-ocsp-srvr:
                           type: string
-                          description: Specify authentication server
+                          description: Specify ocsp authentication server(s) for client certificate verification
                           minLength: 1
                           maxLength: 63
                         client-ocsp:
                           type: integer
                           default: 0
-                          description: Specify ocsp authentication server(s) for client certificate verification
+                          description: Enable ocsp authentication server(s) for client certificate verification
                         client-ocsp-sg:
                           type: string
                           minLength: 1
                           maxLength: 127
-                          description: Specify service-group (Service group name)
-                chain-cert:
-                  type: string
-                  description: Chain Certificate Name stored as Kubernetes Secret
-
+                          description: Specify service-group (Service group name) for client certificate verification
+                
                 server-name-list:
                   type: array
                   items:
@@ -216,7 +216,7 @@ spec:
                 ocspst-ocsp:
                   type: integer
                   default: 0
-                  description: Specify OCSP Authentication
+                  description: Specify OCSP Authentication server for OCSP stapling
                 renegotiation-disable:
                   type: integer
                   default: 0
@@ -282,24 +282,6 @@ spec:
                   type: integer
                   default: 0
                   description: Reject Client requests for SSL version 3
-                certificate-list:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                        cert:
-                          type: string
-                          description: Certificate Name secret stored as Kubernetes Secret
-                        key:
-                          type: string
-                          description: Server Private Key (Key Name) stored as Kubernetes Secret
-                        passphrase:
-                          type: string
-                          description: Password Phrase
-                        chain-cert:
-                          type : string
-                          description: Chain Certificate (Chain Certificate Name) secret stored as Kubernetes Secret
-
             status:
               type: object
               properties:
@@ -320,4 +302,5 @@ spec:
     plural: clientssls
     singular: clientssl
     kind: ClientSsl
-
+    shortNames:
+    - a10clissl
