@@ -17,19 +17,7 @@ spec:
               properties:
                 name:
                   type: string
-                  description: Client SSL Template Name
-                cert:
-                  type: string
-                  description: Certificate Secret Name applicable only as Kubernetes Secret
-                chain-cert:
-                  type: string
-                  description: Chain Certificate Name stored as Kubernetes Secret  
-                key:
-                  type: string
-                  description: Key Secret Name applicable  as Kubernetes Secret
-                passphrase:
-                  type: string
-                  description: Password of encrypted key 
+                  description: Specify the client-ssl Template Name
                 ca-certs:
                   type: array
                   items:
@@ -50,7 +38,7 @@ spec:
                         client-ocsp:
                           type: integer
                           default: 0
-                          description: Enable ocsp authentication server(s) for client certificate verification
+                          description: Enable client certificate OCSP verification
                         client-ocsp-sg:
                           type: string
                           minLength: 1
@@ -66,66 +54,59 @@ spec:
                           type: string
                           minLength: 1
                           maxLength: 63
-                          description: Server name indication in Client hello extension (Server name String)
+                          description: Server name indication in Client hello extension (SNI Server Name)
                         server-cert:
                           type: string
                           minLength: 1
                           maxLength: 245
-                          description: Server Certificate associated to SNI (Server Certificate Name)
+                          description: Specify the server Certificate secret name associated to the SNI
                         server-chain:
                           type: string
                           minLength: 1
                           maxLength: 128
-                          description: Server Certificate Chain associated to SNI (Server Certificate Chain Name) stored as Kubernetes Secret
+                          description: Specify the server Certificate Chain secret name associated to the SNI
                         server-key:
                           type: string
                           minLength: 1
                           maxLength: 245
-                          description: Server Private Key associated to SNI (Server Private Key Name) stored as Kubernetes Secret
+                          description: Specify the server Private Key secret name associated to the SNI
                         server-passphrase:
                           type: string
                           minLength: 1
-                          maxLength: 63
-                          description: help Password Phrase
+                          maxLength: 128
+                          description: Specify the Password Phrase for the server Private Key
                         server-name-alternate:
                           type: integer
-                          description: Specify the second certificate stored as Kubernetes Secret
-                        server-shared:
-                          type: integer
-                          description: Server Name Partition Shared
+                          description: Specify the second/alternate certificate flag
                         server-name-regex:
                           type: string
                           minLength: 1
                           maxLength: 63
-                          description: Server name indication in Client hello extension with regular expression (Server name String with regex)
+                          description: Server name indication in Client hello extension with regular expression (SNI Server name with regex)
                         server-cert-regex:
                           type: string
                           minLength: 1
                           maxLength: 245
-                          description: Server Certificate associated to SNI regex (Server Certificate Name)
+                          description: Specify the server Certificate secret name associated to the SNI regex
                         server-chain-regex:
                           type: string
                           minLength: 1
                           maxLength: 128
-                          description: Server Certificate Chain associated to SNI regex (Server Certificate Chain Name)
+                          description: Specify the server Certificate Chain secret name associated to the SNI regex
                         server-key-regex:
                           type: string
                           minLength: 1
                           maxLength: 245
-                          description: Server Private Key associated to SNI regex (Server Private Key Name) stored as Kubernetes Secret
+                          description: Specify the server Private Key secret name associated to the SNI regex
                         server-passphrase-regex:
                           type: string
                           minLength: 1
-                          maxLength: 63
-                          description: help Password Phrase
+                          maxLength: 128
+                          description: Specify the Password Phrase for the server Private Key to the SNI regex
                         server-name-regex-alternate:
                           type: integer
                           default: 0
-                          description: Specifiy the second certificate
-                        server-shared-regex :
-                          type: integer
-                          default: 0
-                          description: Server Name Partition Shared
+                          description: Specify the second/alternate certificate flag to the SNI regex
                 crl-certs:
                   type: array
                   items:
@@ -133,11 +114,7 @@ spec:
                     properties:
                         crl:
                           type: string
-                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) stored as Kubernetes Secret(type generic)
-                        crl-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Certificate Revocation Lists Partition Shared
+                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
                 cipher-without-prio-list:
                   type: array
                   items:
@@ -145,6 +122,7 @@ spec:
                     properties:
                         cipher-wo-prio:
                             type: string
+                            description: Specify the cipher-suite name
                             enum:
                             - SSL3_RSA_DES_192_CBC3_SHA
                             - SSL3_RSA_RC4_128_MD5
@@ -178,6 +156,7 @@ spec:
                             - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
                 dh-type:
                   type: string
+                  description: Specify Diffie Hellman Parameter
                   enum:
                   - 1024
                   - 1024-dsa
@@ -189,12 +168,14 @@ spec:
                     properties:
                       ec:
                         type: string
+                        description: Specify Elliptic Curve Name
                         enum:
                         - secp256r1
                         - secp384r1
                 close-notify:
                   type: integer
                   default: 0
+                  description: Send close notification when terminate connection
                 local-logging:
                   type: integer
                   default: 0
@@ -204,31 +185,28 @@ spec:
                   minimum: 30
                   maximum: 34
                   default: 33
+                  description: Specify TLS/SSL version to use
                 dgversion:
                   type: integer
                   minimum: 30
                   maximum: 34
                   default: 31
-                oscp-stapling:
-                  type: integer
-                  description: Config OCSP stapling support
-                  default: 0
-                ocspst-ocsp:
-                  type: integer
-                  default: 0
-                  description: Specify OCSP Authentication server for OCSP stapling
+                  description: Specify the oldest TLS/SSL version can be downgraded
                 renegotiation-disable:
                   type: integer
                   default: 0
+                  description: Disable SSL renegotiation
                 session-cache-size:
                   type: integer
                   minimum: 0
                   maximum: 128
                   default: 0
+                  description: Specify the Session Cache Size
                 session-cache-timeout:
                   type: integer
                   minimum: 1
                   maximum: 7200
+                  description: Specify the Session Cache Timeout
                 session-ticket-lifetime:
                   type: integer
                   minimum: 0
@@ -241,18 +219,24 @@ spec:
                   description: Disable client side session ticket support
                 template-cipher:
                   type: string
-                certificate:
-                  type: object
-                  properties:
-                    cert:
-                      type: string
-                      description: Certificate Secret Name
-                    key:
-                      type: string
-                      description: Client private-key (Key Name) Secret Name
-                    passphrase:
-                      type: string
-                      description: Password Phrase
+                  description: Specify the cipher template name
+                certificate-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        cert:
+                          type: string
+                          description: Specify the secret name for certificate
+                        key:
+                          type: string
+                          description: Specify the secret name for private key
+                        passphrase:
+                          type: string
+                          description: Specify the password phrase for the private key
+                        chain-cert:
+                          type : string
+                          description: Specify the secret name for Chain Certificate
                 server-name-auto-map:
                   type: integer
                   default: 0
@@ -303,4 +287,4 @@ spec:
     singular: clientssl
     kind: ClientSsl
     shortNames:
-    - a10clissl
+    - a10clissl   
