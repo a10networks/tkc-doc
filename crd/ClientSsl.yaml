@@ -158,9 +158,9 @@ spec:
                   type: string
                   description: Specify Diffie Hellman Parameter
                   enum:
-                  - 1024
-                  - 1024-dsa
-                  - 2048
+                  - "1024"
+                  - "1024-dsa"
+                  - "2048"
                 ec-list:
                   type: array
                   items:

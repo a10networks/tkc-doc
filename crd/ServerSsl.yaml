@@ -93,9 +93,9 @@ spec:
                 dh-type:
                   type: string
                   enum:
-                  - 1024
-                  - 1024-dsa
-                  - 2048
+                  - "1024"
+                  - "1024-dsa"
+                  - "2048"
                   description: Specify Diffie Hellman Parameter
                 ec-list:
                   type: array
