@@ -11,8 +11,8 @@ helm repo add <name-you-want> https://github.com/a10networks/tkc-doc/charts/
 ## Helm Charts
 
 ```
-| Directory            | TKC version   | Description                                                                |
-| tkc_1.10_IPinIP      | v1.10+        | Deploy TKC with IPinIP overlay-tunnel between Thunder and kubernetes nodes |
-| tkc_1.11_4.1.4-GR1   | v1.11+        | Deploy TKC with ACOS 4.1.4-GR1 Thunders                                    |
+| Directory               | TKC version   | Description                                       |
+| tkc-414-support         | v1.10+        | Deploy TKC with IPinIP overlay-tunnel             |
+| tkc-crd-v1.1            | v1.10+        | Deploy TKC with Custom Resource Definition (CRDs) |
+| tkc-ip-unnumbered-v1.0  | v1.10+        | Deploy TKC with IP-UnNumnbered overlay-tunnel     |
 ```
-

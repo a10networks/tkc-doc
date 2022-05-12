@@ -3,32 +3,32 @@ entries:
   tkc-414-support:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:23:42.303810263+05:30"
+    created: "2022-05-12T14:50:35.013114245+05:30"
     description: A Helm chart for Thunder Kubernetes Connector to backward compatible
       with ACOS 4.1.4 devices and configure on it
     digest: 2e460ab4fb8f4cc3e022590a6739fb5142e97219fa971c7e9abe0b0442264d4e
     name: tkc-414-support
     urls:
-    - https://a10networks.github.io/tkc-doc/tkc-414-support-v1.0.tgz
+    - https://a10networks.github.io/tkc-doc/charts/tkc-414-support-v1.0.tgz
     version: v1.0
   tkc-crd:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:23:42.305560089+05:30"
+    created: "2022-05-12T14:50:35.015214513+05:30"
     description: A Helm chart for Custom Resource Definations (CRD)
     digest: a63bd353b1797e337f4b0f58a1c08f4e02105c286dba7e47a51a3ab10ea4c057
     name: tkc-crd
     urls:
-    - https://a10networks.github.io/tkc-doc/tkc-crd-v1.1.tgz
+    - https://a10networks.github.io/tkc-doc/charts/tkc-crd-v1.1.tgz
     version: v1.1
   tkc-ip-unnumbered:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:23:42.307380053+05:30"
+    created: "2022-05-12T14:50:35.016924574+05:30"
     description: A Helm chart for ip unNumbered
     digest: 533e2fe2f36c3a0daae3e4e3d373568d54fcb85d21a55f5062b8c4e1c375386a
     name: tkc-ip-unnumbered
     urls:
-    - https://a10networks.github.io/tkc-doc/tkc-ip-unnumbered-v1.0.tgz
+    - https://a10networks.github.io/tkc-doc/charts/tkc-ip-unnumbered-v1.0.tgz
     version: v1.0
-generated: "2022-05-12T14:23:42.302004683+05:30"
+generated: "2022-05-12T14:50:35.010908776+05:30"
