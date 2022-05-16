@@ -23,7 +23,7 @@ To get repository name and chart name, tou cam use helm search repo command
 
 ```
 | Directory               | TKC version   | Description                                       |
-| tkc-414-support         | v1.11+        | Deploy TKC with IPinIP overlay-tunnel             |
+| tkc-414-support         | v1.11+        | Deploy TKC with 4.1.4-GR1 ACOS device             |
 | tkc-crd-v1.1            | v1.11+        | Deploy TKC with Custom Resource Definition (CRDs) |
 | tkc-ip-unnumbered-v1.0  | v1.11+        | Deploy TKC with IP-UnNumnbered overlay-tunnel     |
 ```
