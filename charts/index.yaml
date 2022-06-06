@@ -31,4 +31,13 @@ entries:
     urls:
     - https://a10networks.github.io/tkc-doc/charts/tkc-ip-unnumbered-v1.0.tgz
     version: v1.0
+  tkc-ipinip:
+  - apiVersion: v1
+    appVersion: v1.0
+    created: "2022-05-12T14:50:35.016924574+05:30"
+    description: Configure IPinIP overlay tunneling on 
+    name: tkc-ipinip
+    urls:
+    - https://a10networks.github.io/tkc-doc/charts/tkc-ipinip-v1.0.tgz
+    version: v1.0
 generated: "2022-05-12T14:50:35.010908776+05:30"
