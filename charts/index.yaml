@@ -3,10 +3,10 @@ entries:
   tkc-414-support:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:50:35.013114245+05:30"
+    created: "2022-06-16T19:21:20.249183194+05:30"
     description: A Helm chart for Thunder Kubernetes Connector to backward compatible
       with ACOS 4.1.4 devices and configure on it
-    digest: 2e460ab4fb8f4cc3e022590a6739fb5142e97219fa971c7e9abe0b0442264d4e
+    digest: 4c37e7cad3c8a7226a5d2b866d85e79a6e5a9b278c2c661844eab63b6c09d332
     name: tkc-414-support
     urls:
     - https://a10networks.github.io/tkc-doc/charts/tkc-414-support-v1.0.tgz
@@ -14,9 +14,9 @@ entries:
   tkc-crd:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:50:35.015214513+05:30"
+    created: "2022-06-16T19:21:20.25116593+05:30"
     description: A Helm chart for Custom Resource Definations (CRD)
-    digest: a63bd353b1797e337f4b0f58a1c08f4e02105c286dba7e47a51a3ab10ea4c057
+    digest: e3db4f0f2295cec5724ffb3a498b63751c99ff64c156357f2d86ecf22c4b008e
     name: tkc-crd
     urls:
     - https://a10networks.github.io/tkc-doc/charts/tkc-crd-v1.1.tgz
@@ -24,9 +24,9 @@ entries:
   tkc-ip-unnumbered:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:50:35.016924574+05:30"
+    created: "2022-06-16T19:21:20.252793431+05:30"
     description: A Helm chart for ip unNumbered
-    digest: 533e2fe2f36c3a0daae3e4e3d373568d54fcb85d21a55f5062b8c4e1c375386a
+    digest: dce9706c97234ec85964a82e37f090d2f77674c8b454dd7b737066d9939e4131
     name: tkc-ip-unnumbered
     urls:
     - https://a10networks.github.io/tkc-doc/charts/tkc-ip-unnumbered-v1.0.tgz
@@ -34,10 +34,12 @@ entries:
   tkc-ipinip:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-05-12T14:50:35.016924574+05:30"
-    description: Configure IPinIP overlay tunneling on 
+    created: "2022-06-16T19:21:20.254100213+05:30"
+    description: A Helm chart for Thunder Kubernetes Connector to setup IPinIP Tunnels
+      to cluster nodes with direct endpoints connection
+    digest: 68edc1f9da9822b7b82ebd591bed326d49d3dfc3b97bf38ec80c5eca4985502e
     name: tkc-ipinip
     urls:
     - https://a10networks.github.io/tkc-doc/charts/tkc-ipinip-v1.0.tgz
     version: v1.0
-generated: "2022-05-12T14:50:35.010908776+05:30"
+generated: "2022-06-16T19:21:20.247195031+05:30"
