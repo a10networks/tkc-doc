@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thunder-kubernetes-connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thunder-kubernetes-connector
+  template:
+    metadata:
+      labels:
+        app: thunder-kubernetes-connector
+    spec:
+      containers:
+      - name: thunder-kubernetes-connector
+        image: a10networks/a10-kubernetes-connector:1.11.0.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: WATCH_NAMESPACE
+          value: cyan
+        - name: CONTROLLER_URL
+          value: https://10.1.1.32
+        - name: ACOS_USERNAME_PASSWORD_SECRETNAME
+          value: thunder-access-creds
+        - name: PARTION
+          value: shared
+        args:
+        - --watch-namespace=$(WATCH_NAMESPACE)
+        - --use-node-external-ip=true
+        - --patch-to-update=true
+        - --safe-acos-delete=true
+        - --use-ingress-class-only=true
+        - --ingress-class=a10-ext

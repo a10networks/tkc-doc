@@ -1,0 +1,158 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ws-conf-file
+  namespace: cyan
+data:
+  ws.conf: |
+    server {
+        listen 80 default_server;
+        server_name app_server;
+        
+        root /usr/share/nginx/html;
+        error_log /var/log/nginx/app-server-error.log notice;
+        index index.html;
+        expires -1;
+        
+        sub_filter_once off;
+        sub_filter 'server_hostname' '$hostname';
+        sub_filter 'server_address'  '$server_addr:$server_port';
+        sub_filter 'remote_addr'     '$remote_addr:$remote_port';
+        sub_filter 'client_browser'  '$http_user_agent';
+        sub_filter 'document_root'   '$document_root';
+        sub_filter 'proxied_for_ip'  '$http_x_forwarded_for';
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ws-index-file
+  namespace: cyan
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>A10 Testing Webpage</title>
+            <style>
+                body {
+                    margin: 0px;
+                    font: 20px 'RobotoRegular', Arial, sans-serif;
+                    font-weight: 100;
+                    height: 100%;
+                    color: #000000;
+                }
+                img {
+                    width: 200px;
+                    margin: 35px auto 35px auto;
+                    display:block;
+                }
+                div.disp {
+                    display: table;
+                    background: #D8FEFC;
+                    padding: 20px 20px 20px 20px;
+                    border: 2px black;
+                    border-radius: 12px;
+                    margin: 0px auto auto auto;
+                }
+                div.disp p {
+                    display: table-row;
+                    margin: 5px auto auto auto;
+                }
+                div.disp p span {
+                    display: table-cell;
+                    padding: 10px;
+                }
+                h1, h2 {
+                    font-weight: 100;
+                }
+                div.check {
+                    padding: 0px 0px 0px 0px;
+                    display: table;
+                    margin: 35px auto auto auto;
+                    font: 12px 'RobotoRegular', Arial, sans-serif;
+                }
+                #center {
+                    width: 400px;
+                    margin: 0 auto;
+                    font: 12px Courier;
+                }
+            </style>
+            <script>
+                var ref;
+                function checkRefresh() {
+                    if (document.cookie == "refresh=1") {
+                        document.getElementById("check").checked = true;
+                        ref = setTimeout(function(){location.reload();}, 500);
+                    } 
+                }
+                function changeCookie() {
+                    if (document.getElementById("check").checked) {
+                        document.cookie = "refresh=1";
+                        ref = setTimeout(function(){location.reload();}, 500);
+                    } else {
+                        document.cookie = "refresh=0";
+                        clearTimeout(ref);
+                    }
+                }
+            </script>
+        </head>
+        <body onload="checkRefresh();">
+            <div class="disp">
+                <br>
+                <h2>A10 Webserver Demo Page</h2>
+                <p><span>This is a test web page running on a Kubernetes Cluster.</span></p>
+                <p><span>Server Name:</span> <span>server_hostname</span></p>
+                <p><span>Server Address:</span> <span>server_address</span></p>
+                <p><span>UA:</span> <span>client_browser</span></p>
+            </div>
+            <div class="check">
+                <input type="checkbox" id="check" onchange="changeCookie()"> Auto Refresh</input>
+            </div>
+        </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver
+  namespace: cyan
+spec:
+  selector:
+    matchLabels:
+      app: webserver
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+          readOnly: true
+          name: ws-index-file
+        - mountPath: /etc/nginx/conf.d/
+          readOnly: true
+          name: ws-conf-file
+      volumes:
+      - name: ws-index-file
+        configMap:
+          name: ws-index-file
+          items:
+          - key: index.html
+            path: index.html
+      - name: ws-conf-file
+        configMap:
+          name: ws-conf-file
+          items:
+          - key: ws.conf
+            path: ws.conf
+

@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-resource
+  namespace: cyan
+  annotations:
+    kubernetes.io/ingress.class: a10-ext
+    acos.a10networks.com/health-monitors: '[{"name":"ws-mon", "port":"80","type":"http"}]'
+    webserver-svc.acos.a10networks.com/service-group: '{"name":"ws-sg","protocol":"tcp","monitor":"ws-mon","disableMonitor":false}'
+    acos.a10networks.com/virtual-server: '{"name":"ws-vip","vip":"10.1.1.44"}'
+    acos.a10networks.com/virtual-ports: '[{"port":"80","protocol":"http","http2":false,"snat":true}]'
+spec:
+  rules:
+  - host: home.gan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: webserver-svc
+            port:
+              number: 8080
+
