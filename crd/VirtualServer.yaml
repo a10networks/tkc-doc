@@ -19,7 +19,9 @@ spec:
                   type: string
                 ip-address:
                   type: string
-            
+                ip-pool:
+                  type: string
+                  description: "Specify the Calico IPPool name (since TKC v2.0)"
             status:
               type: object
               properties:
@@ -35,6 +37,10 @@ spec:
         type: string
         description: Specify the IP Address for the virtual-server
         jsonPath: .spec.ip-address
+      - name: IPAM
+        type: string
+        description: Specify the IPAM IP Pool name
+        jsonPath: .spec.ip-pool
       - name: Status
         type: string
         jsonPath: .status.state
