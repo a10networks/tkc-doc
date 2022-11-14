@@ -5,7 +5,7 @@ metadata:
 spec:
   group: tkc.a10networks.com
   versions:
-    - name: v1alpha1
+    - name: v1
       served: true
       storage: true
       schema:
@@ -26,15 +26,16 @@ spec:
                         ca-cert:
                           type: string
                           description: Specify CA certificate secret name
-                        ca-cert-partition-shared :
-                          type: integer
-                          default: 0
                         server-ocsp-srvr:
                           type: string
                           description: Specify OCSP server for CA certificate
                         server-ocsp-sg:
                           type: string
                           description: Specify OCSP service-group for CA certificate
+                        ca-cert-partition-shared:
+                          type: integer
+                          default: 0
+                          description: Use Shared Partition CA
                 server-name:
                   type: string
                   description : Specify backend application server Name (for certificate subject or SAN check)
@@ -101,13 +102,13 @@ spec:
                   type: array
                   items:
                     type: object
-                  properties:
-                    ec:
-                      type: string
-                      enum:
-                      - secp256r1
-                      - secp384r1
-                      description: Specify Elliptic Curve Name
+                    properties:
+                      ec:
+                        type: string
+                        enum:
+                        - secp256r1
+                        - secp384r1
+                        description: Specify Elliptic Curve Name
                 close-notify:
                   type: integer
                   default: 0
@@ -189,6 +190,194 @@ spec:
       - name: Status
         type: string
         jsonPath: .status.state
+
+    - name: v1alpha1
+      served: true
+      storage: false 
+      deprecated: true
+      deprecationWarning: tkc.a10networks.com/v1alpha1 Serverssl deprecated.Please consider migrate to tkc.a10networks.com/v1 Serverssl
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Server SSL Template Name
+                ca-certs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        ca-cert:
+                          type: string
+                          description: Specify CA certificate secret name
+                        server-ocsp-srvr:
+                          type: string
+                          description: Specify OCSP server for CA certificate
+                        server-ocsp-sg:
+                          type: string
+                          description: Specify OCSP service-group for CA certificate
+                        ca-cert-partition-shared:
+                          type: integer
+                          default: 0
+                          description: Use Shared Partition CA
+                server-name:
+                  type: string
+                  description : Specify backend application server Name (for certificate subject or SAN check)
+
+                crl-certs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        crl:
+                          type: string
+                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
+                        crl-partition-shared:
+                          type: integer
+                          default: 0
+                          description: Certificate Revocation Lists Partition Shared
+                cipher-without-prio-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        cipher-wo-prio:
+                            type: string
+                            enum:
+                            - SSL3_RSA_DES_192_CBC3_SHA
+                            - SSL3_RSA_RC4_128_MD5
+                            - SSL3_RSA_RC4_128_SHA
+                            - TLS1_RSA_AES_128_SHA
+                            - TLS1_RSA_AES_256_SHA
+                            - TLS1_RSA_AES_128_SHA256
+                            - TLS1_RSA_AES_256_SHA256
+                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                            - TLS1_DHE_RSA_AES_128_SHA
+                            - TLS1_DHE_RSA_AES_128_SHA256
+                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                            - TLS1_DHE_RSA_AES_256_SHA
+                            - TLS1_DHE_RSA_AES_256_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_128_SHA
+                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_ECDSA_AES_256_SHA
+                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                            - TLS1_ECDHE_RSA_AES_128_SHA
+                            - TLS1_ECDHE_RSA_AES_128_SHA256
+                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_RSA_AES_256_SHA
+                            - TLS1_RSA_AES_128_GCM_SHA256
+                            - TLS1_RSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_RSA_AES_256_SHA384
+                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                            description: Specify cipher-suite name
+                dh-type:
+                  type: string
+                  enum:
+                  - "1024"
+                  - "1024-dsa"
+                  - "2048"
+                  description: Specify Diffie Hellman Parameter
+                ec-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ec:
+                        type: string
+                        enum:
+                        - secp256r1
+                        - secp384r1
+                        description: Specify Elliptic Curve Name
+                close-notify:
+                  type: integer
+                  default: 0
+                  description: Send close notification when terminate connection
+                version:
+                  type: integer
+                  minimum: 30
+                  maximum: 34
+                  default: 33
+                  description: Specify TLS/SSL version to use
+                dgversion:
+                  type: integer
+                  minimum: 30
+                  maximum: 34
+                  default: 31
+                  description: Specify the oldest TLS/SSL version can be downgraded
+                server-certificate-error:
+                  type: array
+                  description: Specify actions for server certificate errors
+                  items:
+                    type: object
+                    properties:
+                      error-type:
+                        type: string
+                        enum:
+                        - email
+                        - ignore
+                        - logging
+                        - trap
+                oscp-stapling:
+                  type: integer
+                  description: Enable ocsp-stapling support
+                use-client-sni:
+                  type: integer
+                  default: 0
+                  description: Specify to use client SNI
+                renegotiation-disable:
+                  type: integer
+                  default: 0
+                  description: Disable SSL renegotiation
+                session-cache-size:
+                  type: integer
+                  minimum: 0
+                  maximum: 128
+                  default: 0
+                  description: Specify the Session Cache Size
+                session-cache-timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 7200
+                  description: Specify the Session Cache Timeout
+                cipher-template:
+                  type: string
+                  description: Specify the cipher template name
+                certificate:
+                  type: object
+                  properties:
+                    cert:
+                      type: string
+                      description: Specify the secret name for certificate
+                    key:
+                      type: string
+                      description: Specify the secret name for private key
+                    passphrase:
+                      type: string
+                      description: Specify the password phrase for the private key
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                  default: NoController
+
+      additionalPrinterColumns:
+      - name: Template Name
+        type: string
+        description: Server SSL template
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state    
 
   scope: Namespaced
   names:

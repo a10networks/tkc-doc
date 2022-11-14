@@ -5,7 +5,7 @@ metadata:
 spec:
   group: tkc.a10networks.com
   versions:
-    - name: v1alpha1
+    - name: v1
       served: true
       storage: true
       schema:
@@ -44,6 +44,47 @@ spec:
       - name: Status
         type: string
         jsonPath: .status.state
+    - name: v1alpha1
+      served: true
+      storage: false
+      deprecated: true
+      deprecationWarning: tkc.a10networks.com/v1alpha1 VirtualServer deprecated.Please consider migrate to tkc.a10networks.com/v1 VirtualServer
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                ip-address:
+                  type: string
+                ip-pool:
+                  type: string
+                  description: "Specify the Calico IPPool name (since TKC v2.0)"
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                  default: NoController
+      additionalPrinterColumns:
+      - name: Name
+        type: string
+        description: Specify the virtual-server name
+        jsonPath: .spec.name
+      - name: VIP 
+        type: string
+        description: Specify the IP Address for the virtual-server
+        jsonPath: .spec.ip-address
+      - name: IPAM
+        type: string
+        description: Specify the IPAM IP Pool name
+        jsonPath: .spec.ip-pool
+      - name: Status
+        type: string
+        jsonPath: .status.state    
   names:
     kind: VirtualServer
     plural: virtualservers

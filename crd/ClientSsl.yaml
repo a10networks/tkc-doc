@@ -5,7 +5,7 @@ metadata:
 spec:
   group: tkc.a10networks.com
   versions:
-    - name: v1alpha1
+    - name: v1
       served: true
       storage: true
       schema:
@@ -44,7 +44,6 @@ spec:
                           minLength: 1
                           maxLength: 127
                           description: Specify service-group (Service group name) for client certificate verification
-                
                 server-name-list:
                   type: array
                   items:
@@ -75,6 +74,9 @@ spec:
                           minLength: 1
                           maxLength: 128
                           description: Specify the Password Phrase for the server Private Key
+                        server-shared:
+                          type: integer
+                          description: Use shared partition certificate, Key or chain
                         server-name-alternate:
                           type: integer
                           description: Specify the second/alternate certificate flag
@@ -107,6 +109,10 @@ spec:
                           type: integer
                           default: 0
                           description: Specify the second/alternate certificate flag to the SNI regex
+                        server-shared-regex:
+                          type: integer
+                          default: 0
+                          description: Use shared partition certificate, Key or chain to the SNI regex
                 crl-certs:
                   type: array
                   items:
@@ -115,6 +121,10 @@ spec:
                         crl:
                           type: string
                           description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
+                        crl-partition-shared:
+                          type: integer
+                          default: 0
+                          description: Use shared partition Certificate Revocation Lists
                 cipher-without-prio-list:
                   type: array
                   items:
@@ -271,7 +281,6 @@ spec:
               properties:
                 state:
                   type: string
-
       additionalPrinterColumns:
       - name: Template Name
         type: string
@@ -280,6 +289,292 @@ spec:
       - name: Status
         type: string
         jsonPath: .status.state
+    - name: v1alpha1
+      served: true
+      storage: false
+      deprecated: true
+      deprecationWarning: tkc.a10networks.com/v1alpha1 ClientSsl deprecated.Please consider migrate to tkc.a10networks.com/v1 ClientSsl
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the client-ssl Template Name
+                ca-certs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        ca-cert:
+                          type: string
+                          description: Specify CA certificate secret name
+                        ca-shared :
+                          type: integer
+                          default: 0
+                          description: CA Certificate Partition Shared
+                        client-ocsp-srvr:
+                          type: string
+                          description: Specify ocsp authentication server(s) for client certificate verification
+                          minLength: 1
+                          maxLength: 63
+                        client-ocsp:
+                          type: integer
+                          default: 0
+                          description: Enable client certificate OCSP verification
+                        client-ocsp-sg:
+                          type: string
+                          minLength: 1
+                          maxLength: 127
+                          description: Specify service-group (Service group name) for client certificate verification
+                server-name-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        server-name:
+                          type: string
+                          minLength: 1
+                          maxLength: 63
+                          description: Server name indication in Client hello extension (SNI Server Name)
+                        server-cert:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Specify the server Certificate secret name associated to the SNI
+                        server-chain:
+                          type: string
+                          minLength: 1
+                          maxLength: 128
+                          description: Specify the server Certificate Chain secret name associated to the SNI
+                        server-key:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Specify the server Private Key secret name associated to the SNI
+                        server-passphrase:
+                          type: string
+                          minLength: 1
+                          maxLength: 128
+                          description: Specify the Password Phrase for the server Private Key
+                        server-shared:
+                          type: integer
+                          description: Use shared partition certificate, Key or chain
+                        server-name-alternate:
+                          type: integer
+                          description: Specify the second/alternate certificate flag
+                        server-name-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 63
+                          description: Server name indication in Client hello extension with regular expression (SNI Server name with regex)
+                        server-cert-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Specify the server Certificate secret name associated to the SNI regex
+                        server-chain-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 128
+                          description: Specify the server Certificate Chain secret name associated to the SNI regex
+                        server-key-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 245
+                          description: Specify the server Private Key secret name associated to the SNI regex
+                        server-passphrase-regex:
+                          type: string
+                          minLength: 1
+                          maxLength: 128
+                          description: Specify the Password Phrase for the server Private Key to the SNI regex
+                        server-name-regex-alternate:
+                          type: integer
+                          default: 0
+                          description: Specify the second/alternate certificate flag to the SNI regex
+                        server-shared-regex:
+                          type: integer
+                          default: 0
+                          description: Use shared partition certificate, Key or chain to the SNI regex
+                crl-certs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        crl:
+                          type: string
+                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
+                        crl-partition-shared:
+                          type: integer
+                          default: 0
+                          description: Use shared partition Certificate Revocation Lists
+                cipher-without-prio-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        cipher-wo-prio:
+                            type: string
+                            description: Specify the cipher-suite name
+                            enum:
+                            - SSL3_RSA_DES_192_CBC3_SHA
+                            - SSL3_RSA_RC4_128_MD5
+                            - SSL3_RSA_RC4_128_SHA
+                            - TLS1_RSA_AES_128_SHA
+                            - TLS1_RSA_AES_256_SHA
+                            - TLS1_RSA_AES_128_SHA256
+                            - TLS1_RSA_AES_256_SHA256
+                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                            - TLS1_DHE_RSA_AES_128_SHA
+                            - TLS1_DHE_RSA_AES_128_SHA256
+                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                            - TLS1_DHE_RSA_AES_256_SHA
+                            - TLS1_DHE_RSA_AES_256_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_128_SHA
+                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_ECDSA_AES_256_SHA
+                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                            - TLS1_ECDHE_RSA_AES_128_SHA
+                            - TLS1_ECDHE_RSA_AES_128_SHA256
+                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_RSA_AES_256_SHA
+                            - TLS1_RSA_AES_128_GCM_SHA256
+                            - TLS1_RSA_AES_256_GCM_SHA384
+                            - TLS1_ECDHE_RSA_AES_256_SHA384
+                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                dh-type:
+                  type: string
+                  description: Specify Diffie Hellman Parameter
+                  enum:
+                  - "1024"
+                  - "1024-dsa"
+                  - "2048"
+                ec-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ec:
+                        type: string
+                        description: Specify Elliptic Curve Name
+                        enum:
+                        - secp256r1
+                        - secp384r1
+                close-notify:
+                  type: integer
+                  default: 0
+                  description: Send close notification when terminate connection
+                local-logging:
+                  type: integer
+                  default: 0
+                  description: Enable local logging
+                version:
+                  type: integer
+                  minimum: 30
+                  maximum: 34
+                  default: 33
+                  description: Specify TLS/SSL version to use
+                dgversion:
+                  type: integer
+                  minimum: 30
+                  maximum: 34
+                  default: 31
+                  description: Specify the oldest TLS/SSL version can be downgraded
+                renegotiation-disable:
+                  type: integer
+                  default: 0
+                  description: Disable SSL renegotiation
+                session-cache-size:
+                  type: integer
+                  minimum: 0
+                  maximum: 128
+                  default: 0
+                  description: Specify the Session Cache Size
+                session-cache-timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 7200
+                  description: Specify the Session Cache Timeout
+                session-ticket-lifetime:
+                  type: integer
+                  minimum: 0
+                  maximum: 2147483647
+                  default: 0
+                  description: Session ticket lifetime in seconds from stateless session resumption
+                session-ticket-disable:
+                  type: integer
+                  default: 0
+                  description: Disable client side session ticket support
+                template-cipher:
+                  type: string
+                  description: Specify the cipher template name
+                certificate-list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        cert:
+                          type: string
+                          description: Specify the secret name for certificate
+                        key:
+                          type: string
+                          description: Specify the secret name for private key
+                        passphrase:
+                          type: string
+                          description: Specify the password phrase for the private key
+                        chain-cert:
+                          type : string
+                          description: Specify the secret name for Chain Certificate
+                server-name-auto-map:
+                  type: integer
+                  default: 0
+                  description: Enable automatic mapping of server name indication in Client hello extension
+                sni-enable-log:
+                  type: integer
+                  default: 0
+                  description: Enable logging of sni-auto-map failures. Disable by default
+                sni-bypass-missing-cert:
+                  type: integer
+                  default: 0
+                  description: Bypass when missing cert/key
+                sni-bypass-expired-cert:
+                  type: integer
+                  default: 0
+                  description: Bypass when certificate expired
+                sni-bypass-enable-log:
+                  type: integer
+                  default: 0
+                  description: Enable logging when bypass event happens, disabled by default
+                sni-bypass-explicit-list:
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+                  description: Bypass when matched explicit bypass list (Specify class list name)
+                disable-sslv3:
+                  type: integer
+                  default: 0
+                  description: Reject Client requests for SSL version 3
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: Template Name
+        type: string
+        description: Client SSL template
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state        
 
   scope: Namespaced
   names:
@@ -287,4 +582,4 @@ spec:
     singular: clientssl
     kind: ClientSsl
     shortNames:
-    - a10clissl   
+    - a10clissl
