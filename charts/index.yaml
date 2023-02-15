@@ -1,9 +1,28 @@
 apiVersion: v1
 entries:
+  a10tkc:
+  - annotations:
+      charts.openshift.io/name: a10networks-a10tkc
+    apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-02-15T13:53:46.292872542+05:30"
+    description: A Helm chart for A10 Thunder Kubernetes Connector
+    digest: 31ef1828e10eccdec6695bc988a2857ccf6c5b1268351bb75d5f47ad0d126c8b
+    icon: https://awsmp-logos.s3.amazonaws.com/0cda37b3-aa1a-4c9d-8daf-c396572cc98b/eb20666de8a7a71e6a26afe74e02e517.png
+    kubeVersion: '>= 1.19.0-0'
+    maintainers:
+    - email: support@a10networks.com
+      name: A10 Networks Support Group
+      url: https://a10networks.com
+    name: a10tkc
+    type: application
+    urls:
+    - https://a10networks.github.io/tkc-doc/charts/a10tkc-0.2.0.tgz
+    version: 0.2.0
   tkc-414-support:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-12-29T13:47:38.361752883+05:30"
+    created: "2023-02-15T13:53:46.295559075+05:30"
     description: A Helm chart for Thunder Kubernetes Connector to backward compatible
       with ACOS 4.1.4 devices and configure on it
     digest: 80a52f2dbbb63ee0f3593ed21501d8e31282abe7bf73fa0396beafc248b8e199
@@ -14,7 +33,7 @@ entries:
   tkc-crd:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-12-29T13:47:38.363754861+05:30"
+    created: "2023-02-15T13:53:46.298455983+05:30"
     description: A Helm chart for Custom Resource Definations (CRD)
     digest: facfcd7fe74948bf08a735f6dd0ad78f8b16e617fd27c21d5068e90fff9194c4
     name: tkc-crd
@@ -24,7 +43,7 @@ entries:
   tkc-ip-unnumbered:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-12-29T13:47:38.365671822+05:30"
+    created: "2023-02-15T13:53:46.301720403+05:30"
     description: A Helm chart for ip unNumbered
     digest: 30f6e851fff6c4cf92dd9b3774535263b88815ab29c2e2fcb7a788d304364077
     name: tkc-ip-unnumbered
@@ -34,7 +53,7 @@ entries:
   tkc-ipinip:
   - apiVersion: v1
     appVersion: v1.0
-    created: "2022-12-29T13:47:38.367433227+05:30"
+    created: "2023-02-15T13:53:46.304929137+05:30"
     description: A Helm chart for Thunder Kubernetes Connector to setup IPinIP Tunnels
       to cluster nodes with direct endpoints connection
     digest: 58413936b875704fa2e9817d158c0ee3b27f8729a39178339127ecc561098f94
@@ -42,4 +61,4 @@ entries:
     urls:
     - https://a10networks.github.io/tkc-doc/charts/tkc-ipinip-v1.0.tgz
     version: v1.0
-generated: "2022-12-29T13:47:38.352562501+05:30"
+generated: "2023-02-15T13:53:46.289565252+05:30"
