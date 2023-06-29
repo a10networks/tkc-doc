@@ -74,6 +74,9 @@ spec:
                 minLength: 1
                 maxLength: 63
                 description: "Specify the health monitor for the servers in this service-group"
+              templateServer:
+                type: string
+                description: "Specify Template SLB Server"  
               status:
                 type: string
                 default: "NoController"
