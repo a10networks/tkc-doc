@@ -67,6 +67,10 @@ spec:
                 - round-robin
                 - round-robin-strict
                 - odd-even-hash
+                - service-least-connection
+                - least-connection
+                - weighted-least-connection
+                - service-weighted-least-connection
                 default: "round-robin"
                 description: "Specify the loadbalance method for the service-group"
               serverHealthCheck:
@@ -76,10 +80,39 @@ spec:
                 description: "Specify the health monitor for the servers in this service-group"
               templateServer:
                 type: string
-                description: "Specify Template SLB Server"  
+                minLength: 1
+                maxLength: 127
+                description: "Specify Template SLB Server"
               status:
                 type: string
                 default: "NoController"
+              pseudoRoundRobin:
+                type: integer
+                minimum: 0
+                maximum: 1
+                default: 0
+                description: "Select the oldest node for sub-select"
+              resetOnServerSelectionFail:
+                type: integer
+                minimum: 0
+                maximum: 1
+                default: 0
+                description: "Send reset to client if server selection fails"
+              healthCheckFollowPort:
+                type: integer
+                minimum: 1
+                maximum: 65534
+                description: "Specify which port to follow for health status (Port Number)"
+              portHealthCheck:
+                type: string
+                minLength: 1
+                maxLength: 63
+                description: "Specify the health monitor for the server port"
+              templatePort:
+                type: string
+                minLength: 1
+                maxLength: 127
+                description: "Specify TemplatePort"
             required:
               - name
               - service

@@ -29,6 +29,12 @@ spec:
                   minimum: 1
                   maximum: 1048575
                   description: "Connection rate limit"
+                allow-syn-otherflags:
+                  type: boolean
+                  description: "Enable or Disable allow-syn-otherflags"
+                reset-unknown-conn:
+                  type: boolean
+                  description: "Enable or Disable reset-unknown-conn"
                 user-tag:
                   type: string
                   description: "User Tag" 

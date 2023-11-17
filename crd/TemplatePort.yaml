@@ -1,0 +1,297 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templateports.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-validations:
+          properties:
+            spec:
+              type: object
+              properties:         
+                name:
+                  description: Port template name
+                  maxLength: 127
+                  minLength: 1
+                  type: string
+                user-tag:
+                  description: Customized tag
+                  maxLength: 127
+                  minLength: 1
+                  type: string   
+                #connection limit configuration  
+                conn-limit:
+                  description: Connection limit
+                  default: 64000000
+                  maximum: 64000000
+                  minimum: 1
+                  type: number
+                conn-limit-no-logging:
+                  description: Do not log connection over limit event
+                  default: 0
+                  type: number
+                conn-rate-limit:
+                  description: Connection rate limit
+                  maximum: 1048575
+                  minimum: 1
+                  type: number
+                conn-rate-limit-no-logging:
+                  description: Do not log connection over limit event
+                  default: 0
+                  type: number
+                conn-resume:
+                  description: Resume accepting new connection after connection number drops below
+                    threshold (Connection resume threshold)
+                  maximum: 1048575
+                  minimum: 1
+                  type: number    
+                #slow start configuration  
+                slow-start-enable:
+                  description: Slowly ramp up the connection number after port is up
+                  default: 0
+                  type: number
+                slow-start-initial-conn-limit:
+                  description: Initial slow start connection limit (default 128)
+                  default: 128
+                  maximum: 4095
+                  minimum: 1
+                  type: number  
+                slow-start-conn-limit-add:
+                  description: Slow start connection limit add by a number every interval (Add by this number every interval)
+                  maximum: 4095
+                  minimum: 1
+                  type: number
+                slow-start-conn-limit-increment-interval:
+                  description: Slow start connection limit increment interval (default 10)
+                  maximum: 60
+                  minimum: 1
+                  default: 10  
+                  type: number
+                slow-start-conn-limit-max-threshold:
+                  description: Slow start ends when slow start connection limit reaches a number
+                    (default 4096) (Slow start ends when connection limit reaches this number)
+                  default: 4096
+                  maximum: 65535
+                  minimum: 1
+                  type: number
+                slow-start-conn-limit-increment-multiplier:
+                  default: 2
+                  description: Slow start connection limit multiply by a number every interval (default
+                    2) (Multiply by this number every interval), add and times are mutually exclusive
+                  maximum: 10
+                  minimum: 2
+                  type: number 
+                  decrement:
+                  description: Decrease after every round of DNS query (default is 0)
+                  default: 0
+                  maximum: 7
+                  minimum: 0
+                  type: number
+                #---------Below Options are in available as experimental -------------# 
+                # Warning - Config options for below section might fail  
+                dest-nat:
+                  default: 0
+                  description: Destination NAT
+                  type: number
+                down-grace-period:
+                  description: Port down grace period (Down grace period in seconds)
+                  maximum: 86400
+                  minimum: 1
+                  type: number
+                del-session-on-server-down:
+                  default: 0
+                  description: Delete session if the server/port goes down (either disabled/hm down)
+                  type: number  
+                down-timer:
+                  default: 0
+                  description: The timer to bring the marked down server/port to up (default is
+                    0, never bring up) (The timer to bring up server (in second, default is 0))
+                  maximum: 255
+                  minimum: 0
+                  type: number
+                dscp:
+                  description: Differentiated Services Code Point (DSCP to Real Server IP Mapping
+                    Value)
+                  maximum: 63
+                  minimum: 1
+                  type: number
+                dynamic-member-priority:
+                  description: Set dynamic member's priority (Initial priority (default is 16))
+                  default: 16
+                  maximum: 16
+                  minimum: 1 
+                  type: number
+                extended-stats:
+                  default: 0
+                  description: Enable extended statistics on real server port,health-check and health-check-disable are mutually exclusive
+                  type: number 
+                source-nat:
+                  description: Source NAT (IP NAT Pool or pool group name),mutually exclusive with shared-partition-pool
+                  maxLength: 128
+                  minLength: 1
+                  type: string   
+                no-ssl:
+                  description: No SSL
+                  default: 0
+                  type: number
+                rate-interval:
+                  description: '''100ms'': Use 100 ms as sampling interval; ''second'': Use 1 second
+                    as sampling interval; '
+                  default: second  
+                  enum:
+                  - 100ms
+                  - second
+                  type: string
+                resel-on-reset:
+                  description: When receiving reset from server, do the server/port reselection
+                    (default is 0, don't do reselection)
+                  default: 0  
+                  type: number
+                stats-data-action:
+                  default: stats-data-enable
+                  description: '''stats-data-enable'': Enable statistical data collection for real
+                    server port; ''stats-data-disable'': Disable statistical data collection for
+                    real server port; ' 
+                  enum:
+                  - stats-data-enable
+                  - stats-data-disable
+                  type: string
+                sub-group:
+                  description: Divide service group members into different sub groups (Sub group
+                    ID (default is 0))
+                  default: 0
+                  maximum: 15
+                  minimum: 0
+                  type: number
+                template-port-pool-shared:
+                  description: Source NAT (IP NAT Pool or pool group name)
+                  maxLength: 128
+                  minLength: 1   
+                  type: string
+                weight:
+                  default: 1
+                  description: Weight (port weight)
+                  maximum: 1000
+                  minimum: 1 
+                  type: number
+                
+                shared-partition-pool:
+                  default: 0
+                  description: Reference a NAT pool or pool-group from shared partition,mutually exclusive with source-nat
+                  type: number 
+                # request rate configuration
+                request-rate-interval:
+                  description: '''100ms'': Use 100 ms as sampling interval; ''second'': Use 1 second
+                    as sampling interval; '
+                  default: second
+                  enum:
+                  - 100ms
+                  - second
+                  type: string
+                request-rate-limit:
+                  description: Request rate limit
+                  maximum: 1048575
+                  minimum: 1
+                  type: number 
+                request-rate-no-logging:
+                  description: Do not log connection over limit event
+                  default: 0
+                  type: number
+                request-rate-reset:
+                  description: Send client reset when connection rate over limit
+                  default: 0
+                  type: number     
+                #health check configuration
+                health-check:
+                  description: Health Check Monitor (Health monitor name)
+                  maxLength: 63
+                  minLength: 1
+                  type: string
+                health-check-disable:
+                  description: Disable configured health check configuration, health-check and health-check-disable are mutually exclusive
+                  default: 0
+                  type: number
+                #inband health check configuration  
+                inband-health-check:
+                  default: 0
+                  description: Use inband traffic to detect port's health status
+                  type: number
+                inband-health-check-reassign:
+                  default: 25
+                  description: Maximum reassign times before declear the server/port down (default
+                    is 25) (The maximum reassign number)
+                  maximum: 255
+                  minimum: 0
+                  type: number  
+                inband-health-check-retry:
+                  description: Maximum retry times before reassign this connection to another server/port
+                    (default is 2) (The maximum retry number)
+                  default: 2
+                  maximum: 7
+                  minimum: 0
+                  type: number  
+                #Flap configuration
+                dampening-flaps:
+                  description: service dampening flaps count (max-flaps allowed in flap period)
+                  maximum: 255
+                  minimum: 1
+                  type: number
+                flap-period:
+                  description: take service out of rotation if max-flaps exceeded within time in
+                    seconds
+                  maximum: 255
+                  minimum: 1
+                  type: number
+                restore-svc-time:
+                  description: put the service back to the rotation after time in seconds
+                  maximum: 4095
+                  minimum: 1
+                  type: number   
+               #bandwidth configuration
+                bw-rate-limit:
+                  description: Configure bandwidth rate limit on real server port (Bandwidth rate limit in Kbps)
+                  maximum: 16777216
+                  minimum: 1
+                  type: number
+                bw-rate-limit-duration:
+                  description: Duration in seconds the observed rate needs to honor
+                  maximum: 250
+                  minimum: 1
+                  type: number
+                bw-rate-limit-no-logging:
+                  description: Do not log bandwidth rate limit related state transitions
+                  default: 0
+                  type: number
+                bw-rate-limit-resume:
+                  description: Resume server selection after bandwidth drops below this threshold (in Kbps) (Bandwidth rate limit resume threshold (in Kbps))
+                  maximum: 16777216
+                  minimum: 1
+                  type: number  
+              required:
+                - name        
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: TemplatePortName 
+        type: string
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state 
+  names:
+    kind: TemplatePort
+    plural: templateports
+    singular: templateport
+    shortNames:
+    - a10tport
+  scope: Namespaced
