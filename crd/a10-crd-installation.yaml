@@ -1977,7 +1977,6 @@ spec:
     shortNames:
     - a10activehadevice
   scope: Namespaced
-
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2036,7 +2035,7 @@ spec:
     shortNames:
     - a10tslbserver
   scope: Namespaced
-
+  
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2128,7 +2127,7 @@ spec:
                   maximum: 10
                   minimum: 2
                   type: number 
-                  decrement:
+                decrement:
                   description: Decrease after every round of DNS query (default is 0)
                   default: 0
                   maximum: 7
