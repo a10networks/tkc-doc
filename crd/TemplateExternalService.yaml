@@ -1,0 +1,67 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templateexternalservices.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "Template External Service Name"
+                requestHeaderForwardList:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      requestHeaderForward:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: "Request header to be forwarded to external service (Header Name)"
+                timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 200
+                  default: 5
+                  description: "Timeout value in units of 200ms"
+                action:
+                  type: string
+                  default: continue
+                  description: "Supported values: continue, drop, reset"
+                serviceGroup:
+                  type: string
+                  description: "Service group name to be binded to the template"
+                templateTcpProxy:
+                  type: string
+                  description: "Tcp proxy template to be attached to the template" 
+              required:
+                - name         
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: Name
+        type: string
+        jsonPath: .spec.name 
+      - name: Status
+        type: string
+        jsonPath: .status.state  
+  names:
+    kind: TemplateExternalService
+    plural: templateexternalservices
+    singular: templateexternalservice
+    shortNames:
+    - a10tes
+  scope: Namespaced

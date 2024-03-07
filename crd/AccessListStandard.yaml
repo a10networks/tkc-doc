@@ -1,0 +1,83 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: accessliststandards.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: IP standard access list
+                  minimum: 1
+                  maximum: 99
+                rules:
+                  type: array 
+                  items:
+                    type: object  
+                    properties:
+                      seqNum:
+                        type: integer
+                        minimum: 1
+                        maximum: 8192
+                        description: Sequence integer
+                      remark:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Access list entry comment (Notes for this ACL)
+                      action:
+                        type: string
+                        description: "'deny': Deny; 'permit': Permit; 'l3-vlan-fwd-disable': Disable
+                          L3 forwarding between VLANs;"
+                        enum:
+                        - deny
+                        - permit
+                        - l3-vlan-fwd-disable
+                      any:
+                        type: integer
+                        default: 0
+                        not-list:
+                        - host
+                        - subnet
+                        description: Any source host,mutual exclusive with network
+                      network:
+                        type: string
+                        description: IP address or netwrok in cidr notation,mutual exclusive with any
+              required:
+                  - id
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                attachedToVip:
+                  type: boolean  
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+      - name: id
+        type: string
+        jsonPath: .spec.id
+      - name: Status 
+        type: string
+        jsonPath: .status.state
+      - name: AttachedToVirtualServer
+        type: boolean
+        jsonPath: .status.attachedToVip 
+  names:
+    kind: AccessListStandard
+    plural: accessliststandards
+    singular: accessliststandard
+    shortNames:
+    - a10acls
+  scope: Namespaced

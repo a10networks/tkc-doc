@@ -158,6 +158,11 @@ spec:
                   minLength: 1
                   maxLength: 127
                   description: "Specify the tcp-proxy template for the virtual-port"
+                externalServiceTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify the external-service template for the virtual-port"
                 noDestNat:
                   type: integer
                   minimum: 0

@@ -1,3 +1,4 @@
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -10,85 +11,85 @@ spec:
     singular: natpool
     kind: NatPool
     shortNames:
-    - a10natpool
+      - a10natpool
   versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          metadata:
-            type: object
-            properties:
-              name:
-                type: string
-          spec:
-            type: object
-            properties:
-              poolName:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the pool name"
-              startAddress:
-                type: string
-                pattern: "^[0-9]+.[0-9]+.[0-9]+.[0-9]+$"
-                description: "Specify the NAT pool start address"
-              endAddress:
-                type: string
-                pattern: "^[0-9]+.[0-9]+.[0-9]+.[0-9]+$"
-                description: "Specify the NAT pool end address"
-              netmask:
-                type: string
-                pattern: "^/[0-9]+$"
-                description: "Specify the NAT pool netmask"
-              gateway:
-                type: string
-                description: "Specify the gateway for the NAT pool"
-              ipRr:
-                type: boolean
-                description: "NAT Pool will use IP address round-robin behavior"
-              portOverload:
-                type: boolean
-                description: "Enable Nat Pool Port overload"
-              vrid:
-                type: integer
-                minimum: 0
-                maximum: 31
-                description: "Configure VRRP-A vrid for the NAT pool"
-              status:
-                type: string
-                default: "NoController"
-            required:
-              - poolName
-              - startAddress
-              - endAddress
-              - netmask
-    additionalPrinterColumns:
-    - name: pool
-      type: string
-      description: The nat-pool name
-      jsonPath: .spec.poolName
-    - name: status
-      type: string
-      jsonPath: .spec.status
-    - name: start
-      type: string
-      description: The start address of the nat-pool
-      jsonPath: .spec.startAddress
-    - name: end
-      type: string
-      description: The end address of the nat-pool
-      jsonPath: .spec.endAddress
-    - name: netmask
-      type: string
-      description: The netmask for the nat-pool
-      jsonPath: .spec.netmask
-    - name: Age
-      type: date
-      jsonPath: .metadata.creationTimestamp
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                name:
+                  type: string
+            spec:
+              type: object
+              properties:
+                poolName:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: Specify the pool name
+                startAddress:
+                  type: string
+                  pattern: ^[0-9]+.[0-9]+.[0-9]+.[0-9]+$
+                  description: Specify the NAT pool start address
+                endAddress:
+                  type: string
+                  pattern: ^[0-9]+.[0-9]+.[0-9]+.[0-9]+$
+                  description: Specify the NAT pool end address
+                netmask:
+                  type: string
+                  pattern: ^/[0-9]+$
+                  description: Specify the NAT pool netmask
+                gateway:
+                  type: string
+                  description: Specify the gateway for the NAT pool
+                ipRr:
+                  type: boolean
+                  description: NAT Pool will use IP address round-robin behavior
+                portOverload:
+                  type: boolean
+                  description: Enable Nat Pool Port overload
+                vrid:
+                  type: integer
+                  minimum: 0
+                  maximum: 31
+                  description: Configure VRRP-A vrid for the NAT pool
+                status:
+                  type: string
+                  default: NoController
+              required:
+                - poolName
+                - startAddress
+                - endAddress
+                - netmask
+      additionalPrinterColumns:
+        - name: pool
+          type: string
+          description: The nat-pool name
+          jsonPath: .spec.poolName
+        - name: status
+          type: string
+          jsonPath: .spec.status
+        - name: start
+          type: string
+          description: The start address of the nat-pool
+          jsonPath: .spec.startAddress
+        - name: end
+          type: string
+          description: The end address of the nat-pool
+          jsonPath: .spec.endAddress
+        - name: netmask
+          type: string
+          description: The netmask for the nat-pool
+          jsonPath: .spec.netmask
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -103,109 +104,112 @@ spec:
     singular: healthmonitor
     kind: HealthMonitor
     shortNames:
-    - a10hm
+      - a10hm
   versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          metadata:
-            type: object
-            properties:
-              name:
-                type: string
-          spec:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify health monitor name"
-              type:
-                type: string
-                enum:
-                - tcp
-                - http
-                - https
-                - icmp
-                description: "Specify health monitor protocol type"
-              port:
-                type: integer
-                minimum: 0
-                maximum: 65535
-                description: "Specify health monitor port number"
-              retry:
-                type: integer
-                minimum: 1
-                maximum: 10
-                description: "Specify the max retry for health monitor"
-              interval:
-                type: integer
-                minimum: 1
-                maximum: 180
-                description: "Specify the retry intreval for health monitor"
-              timeout:
-                type: integer
-                minimum: 1
-                maximum: 180
-                description: "Specify the timeout for health monitor"
-              httpHost:
-                type: string
-                description: "Specify the Host for http/https health monitor"
-              httpUrl:
-                type: string
-                description: "Specify the URL for http/https health monitor"
-              httpMethod:
-                type: string
-                enum:
-                - GET
-                - HEAD
-                description: "Specify the method for http/https health monitor"
-              httpCode:
-                type: integer
-                minimum: 0
-                maximum: 1000
-                description: "Specify the expecting status code for http/https health monitor"
-              httpCodeRegex:
-                type: string
-                description: "Specify the expecting status code regular expression for http/https health monitor"
-              httpText:
-                type: string
-                description: "Specify the expecting response content for http/https health monitor"
-              httpTextRegex:
-                type: string
-                description: "Specify the expecting response content regular expression for http/https health monitor"
-              status:
-                type: string
-                default: "NoController"
-            required:
-              - name
-              - type
-    additionalPrinterColumns:
-    - name: name
-      type: string
-      description: The Health Monitor Name
-      jsonPath: .spec.name
-    - name: status
-      type: string
-      jsonPath: .spec.status
-    - name: type
-      type: string
-      description: The Health Monitor Type
-      jsonPath: .spec.type
-    - name: host
-      type: string
-      jsonPath: .spec.httpHost
-    - name: url
-      type: string
-      jsonPath: .spec.httpUrl
-    - name: code
-      type: integer
-      jsonPath: .spec.httpCode
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                name:
+                  type: string
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: Specify health monitor name
+                type:
+                  type: string
+                  enum:
+                    - tcp
+                    - http
+                    - https
+                    - icmp
+                  description: Specify health monitor protocol type
+                port:
+                  type: integer
+                  minimum: 0
+                  maximum: 65535
+                  description: Specify health monitor port number
+                retry:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  description: Specify the max retry for health monitor
+                interval:
+                  type: integer
+                  minimum: 1
+                  maximum: 180
+                  description: Specify the retry intreval for health monitor
+                timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 180
+                  description: Specify the timeout for health monitor
+                httpHost:
+                  type: string
+                  description: Specify the Host for http/https health monitor
+                httpUrl:
+                  type: string
+                  description: Specify the URL for http/https health monitor
+                httpMethod:
+                  type: string
+                  enum:
+                    - GET
+                    - HEAD
+                  description: Specify the method for http/https health monitor
+                httpCode:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                  description: Specify the expecting status code for http/https health monitor
+                httpCodeRegex:
+                  type: string
+                  description: Specify the expecting status code regular expression for http/https
+                    health monitor
+                httpText:
+                  type: string
+                  description: Specify the expecting response content for http/https health
+                    monitor
+                httpTextRegex:
+                  type: string
+                  description: Specify the expecting response content regular expression for
+                    http/https health monitor
+                status:
+                  type: string
+                  default: NoController
+              required:
+                - name
+                - type
+      additionalPrinterColumns:
+        - name: name
+          type: string
+          description: The Health Monitor Name
+          jsonPath: .spec.name
+        - name: status
+          type: string
+          jsonPath: .spec.status
+        - name: type
+          type: string
+          description: The Health Monitor Type
+          jsonPath: .spec.type
+        - name: host
+          type: string
+          jsonPath: .spec.httpHost
+        - name: url
+          type: string
+          jsonPath: .spec.httpUrl
+        - name: code
+          type: integer
+          jsonPath: .spec.httpCode
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -228,10 +232,10 @@ spec:
               properties:
                 name:
                   type: string
-                  description: "Specify the name for cipher template"
+                  description: Specify the name for cipher template
                 user-tag:
                   type: string
-                  description: "Specify the customized tag for cipher template"
+                  description: Specify the customized tag for cipher template
                 cipher-cfg:
                   type: array
                   items:
@@ -240,44 +244,44 @@ spec:
                       cipher-suite:
                         type: string
                         enum:
-                        - SSL3_RSA_DES_192_CBC3_SHA
-                        - SSL3_RSA_RC4_128_MD5
-                        - SSL3_RSA_RC4_128_SHA
-                        - TLS1_RSA_AES_128_SHA
-                        - TLS1_RSA_AES_256_SHA
-                        - TLS1_RSA_AES_128_SHA256
-                        - TLS1_RSA_AES_256_SHA256
-                        - TLS1_DHE_RSA_AES_128_GCM_SHA256
-                        - TLS1_DHE_RSA_AES_128_SHA
-                        - TLS1_DHE_RSA_AES_128_SHA256
-                        - TLS1_DHE_RSA_AES_256_GCM_SHA384
-                        - TLS1_DHE_RSA_AES_256_SHA
-                        - TLS1_DHE_RSA_AES_256_SHA256
-                        - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
-                        - TLS1_ECDHE_ECDSA_AES_128_SHA
-                        - TLS1_ECDHE_ECDSA_AES_128_SHA256
-                        - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
-                        - TLS1_ECDHE_ECDSA_AES_256_SHA
-                        - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
-                        - TLS1_ECDHE_RSA_AES_128_SHA
-                        - TLS1_ECDHE_RSA_AES_128_SHA256
-                        - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
-                        - TLS1_ECDHE_RSA_AES_256_SHA
-                        - TLS1_RSA_AES_128_GCM_SHA256
-                        - TLS1_RSA_AES_256_GCM_SHA384
-                        - TLS1_ECDHE_RSA_AES_256_SHA384
-                        - TLS1_ECDHE_ECDSA_AES_256_SHA384
-                        - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
-                        - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
-                        - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
-                        - TLS1_ECDHE_SM2_WITH_SMS4_SM3
-                        - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
-                        - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
-                        description: "Specify the cipher-suite name"
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SM3
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
+                        description: Specify the cipher-suite name
                       priority:
                         type: integer
                         default: 1
-                        description: "Specify the priority for this cipher-suite"
+                        description: Specify the priority for this cipher-suite
                 cipher13-cfg:
                   type: array
                   items:
@@ -286,14 +290,14 @@ spec:
                       cipher13-suite:
                         type: string
                         enum:
-                        - TLS_AES_256_GCM_SHA384
-                        - TLS_CHACHA20_POLY1305_SHA256
-                        - TLS_AES_128_GCM_SHA256
-                        description: "Specify the cipher-suite name"
+                          - TLS_AES_256_GCM_SHA384
+                          - TLS_CHACHA20_POLY1305_SHA256
+                          - TLS_AES_128_GCM_SHA256
+                        description: Specify the cipher-suite name
                       priority:
                         type: integer
                         default: 1
-                        description: "Specify the priority for this cipher-suite"
+                        description: Specify the priority for this cipher-suite
               required:
                 - name
             status:
@@ -303,18 +307,20 @@ spec:
                   type: string
                   default: NoController
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        description: Template Cipher Name
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state
+        - name: Name
+          type: string
+          description: Template Cipher Name
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
     - name: v1alpha1
       served: true
-      storage: false 
+      storage: false
       deprecated: true
-      deprecationWarning: tkc.a10networks.com/v1alpha1 TemplateCipher deprecated.Please consider migrate to tkc.a10networks.com/v1 Template Cipher
+      deprecationWarning: tkc.a10networks.com/v1alpha1 TemplateCipher
+        deprecated.Please consider migrate to tkc.a10networks.com/v1 Template
+        Cipher
       schema:
         openAPIV3Schema:
           type: object
@@ -325,10 +331,10 @@ spec:
               properties:
                 name:
                   type: string
-                  description: "Specify the name for cipher template"
+                  description: Specify the name for cipher template
                 user-tag:
                   type: string
-                  description: "Specify the customized tag for cipher template"
+                  description: Specify the customized tag for cipher template
                 cipher-cfg:
                   type: array
                   items:
@@ -337,44 +343,44 @@ spec:
                       cipher-suite:
                         type: string
                         enum:
-                        - SSL3_RSA_DES_192_CBC3_SHA
-                        - SSL3_RSA_RC4_128_MD5
-                        - SSL3_RSA_RC4_128_SHA
-                        - TLS1_RSA_AES_128_SHA
-                        - TLS1_RSA_AES_256_SHA
-                        - TLS1_RSA_AES_128_SHA256
-                        - TLS1_RSA_AES_256_SHA256
-                        - TLS1_DHE_RSA_AES_128_GCM_SHA256
-                        - TLS1_DHE_RSA_AES_128_SHA
-                        - TLS1_DHE_RSA_AES_128_SHA256
-                        - TLS1_DHE_RSA_AES_256_GCM_SHA384
-                        - TLS1_DHE_RSA_AES_256_SHA
-                        - TLS1_DHE_RSA_AES_256_SHA256
-                        - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
-                        - TLS1_ECDHE_ECDSA_AES_128_SHA
-                        - TLS1_ECDHE_ECDSA_AES_128_SHA256
-                        - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
-                        - TLS1_ECDHE_ECDSA_AES_256_SHA
-                        - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
-                        - TLS1_ECDHE_RSA_AES_128_SHA
-                        - TLS1_ECDHE_RSA_AES_128_SHA256
-                        - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
-                        - TLS1_ECDHE_RSA_AES_256_SHA
-                        - TLS1_RSA_AES_128_GCM_SHA256
-                        - TLS1_RSA_AES_256_GCM_SHA384
-                        - TLS1_ECDHE_RSA_AES_256_SHA384
-                        - TLS1_ECDHE_ECDSA_AES_256_SHA384
-                        - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
-                        - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
-                        - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
-                        - TLS1_ECDHE_SM2_WITH_SMS4_SM3
-                        - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
-                        - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
-                        description: "Specify the cipher-suite name"
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SM3
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
+                        description: Specify the cipher-suite name
                       priority:
                         type: integer
                         default: 1
-                        description: "Specify the priority for this cipher-suite"
+                        description: Specify the priority for this cipher-suite
                 cipher13-cfg:
                   type: array
                   items:
@@ -383,14 +389,14 @@ spec:
                       cipher13-suite:
                         type: string
                         enum:
-                        - TLS_AES_256_GCM_SHA384
-                        - TLS_CHACHA20_POLY1305_SHA256
-                        - TLS_AES_128_GCM_SHA256
-                        description: "Specify the cipher-suite name"
+                          - TLS_AES_256_GCM_SHA384
+                          - TLS_CHACHA20_POLY1305_SHA256
+                          - TLS_AES_128_GCM_SHA256
+                        description: Specify the cipher-suite name
                       priority:
                         type: integer
                         default: 1
-                        description: "Specify the priority for this cipher-suite"
+                        description: Specify the priority for this cipher-suite
               required:
                 - name
             status:
@@ -400,30 +406,28 @@ spec:
                   type: string
                   default: NoController
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        description: Template Cipher Name
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state
+        - name: Name
+          type: string
+          description: Template Cipher Name
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
   conversion:
-    strategy: None         
-
+    strategy: None
   scope: Namespaced
   names:
     plural: templateciphers
     singular: templatecipher
     kind: TemplateCipher
     shortNames:
-    - a10tc
-
+      - a10tc
 
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-    name: clientssls.tkc.a10networks.com
+  name: clientssls.tkc.a10networks.com
 spec:
   group: tkc.a10networks.com
   versions:
@@ -445,154 +449,163 @@ spec:
                   items:
                     type: object
                     properties:
-                        ca-cert:
-                          type: string
-                          description: Specify CA certificate secret name
-                        ca-shared :
-                          type: integer
-                          default: 0
-                          description: CA Certificate Partition Shared
-                        client-ocsp-srvr:
-                          type: string
-                          description: Specify ocsp authentication server(s) for client certificate verification
-                          minLength: 1
-                          maxLength: 63
-                        client-ocsp:
-                          type: integer
-                          default: 0
-                          description: Enable client certificate OCSP verification
-                        client-ocsp-sg:
-                          type: string
-                          minLength: 1
-                          maxLength: 127
-                          description: Specify service-group (Service group name) for client certificate verification
+                      ca-cert:
+                        type: string
+                        description: Specify CA certificate secret name
+                      ca-shared:
+                        type: integer
+                        default: 0
+                        description: CA Certificate Partition Shared
+                      client-ocsp-srvr:
+                        type: string
+                        description: Specify ocsp authentication server(s) for client certificate
+                          verification
+                        minLength: 1
+                        maxLength: 63
+                      client-ocsp:
+                        type: integer
+                        default: 0
+                        description: Enable client certificate OCSP verification
+                      client-ocsp-sg:
+                        type: string
+                        minLength: 1
+                        maxLength: 127
+                        description: Specify service-group (Service group name) for client certificate
+                          verification
                 server-name-list:
                   type: array
                   items:
                     type: object
                     properties:
-                        server-name:
-                          type: string
-                          minLength: 1
-                          maxLength: 63
-                          description: Server name indication in Client hello extension (SNI Server Name)
-                        server-cert:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Certificate secret name associated to the SNI
-                        server-chain:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the server Certificate Chain secret name associated to the SNI
-                        server-key:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Private Key secret name associated to the SNI
-                        server-passphrase:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the Password Phrase for the server Private Key
-                        server-shared:
-                          type: integer
-                          description: Use shared partition certificate, Key or chain
-                        server-name-alternate:
-                          type: integer
-                          description: Specify the second/alternate certificate flag
-                        server-name-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 63
-                          description: Server name indication in Client hello extension with regular expression (SNI Server name with regex)
-                        server-cert-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Certificate secret name associated to the SNI regex
-                        server-chain-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the server Certificate Chain secret name associated to the SNI regex
-                        server-key-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Private Key secret name associated to the SNI regex
-                        server-passphrase-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the Password Phrase for the server Private Key to the SNI regex
-                        server-name-regex-alternate:
-                          type: integer
-                          default: 0
-                          description: Specify the second/alternate certificate flag to the SNI regex
-                        server-shared-regex:
-                          type: integer
-                          default: 0
-                          description: Use shared partition certificate, Key or chain to the SNI regex
+                      server-name:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Server name indication in Client hello extension (SNI Server Name)
+                      server-cert:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Certificate secret name associated to the SNI
+                      server-chain:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the server Certificate Chain secret name associated to the
+                          SNI
+                      server-key:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Private Key secret name associated to the SNI
+                      server-passphrase:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the Password Phrase for the server Private Key
+                      server-shared:
+                        type: integer
+                        description: Use shared partition certificate, Key or chain
+                      server-name-alternate:
+                        type: integer
+                        description: Specify the second/alternate certificate flag
+                      server-name-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Server name indication in Client hello extension with regular
+                          expression (SNI Server name with regex)
+                      server-cert-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Certificate secret name associated to the SNI
+                          regex
+                      server-chain-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the server Certificate Chain secret name associated to the
+                          SNI regex
+                      server-key-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Private Key secret name associated to the SNI
+                          regex
+                      server-passphrase-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the Password Phrase for the server Private Key to the SNI
+                          regex
+                      server-name-regex-alternate:
+                        type: integer
+                        default: 0
+                        description: Specify the second/alternate certificate flag to the SNI regex
+                      server-shared-regex:
+                        type: integer
+                        default: 0
+                        description: Use shared partition certificate, Key or chain to the SNI regex
                 crl-certs:
                   type: array
                   items:
                     type: object
                     properties:
-                        crl:
-                          type: string
-                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
-                        crl-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Use shared partition Certificate Revocation Lists
+                      crl:
+                        type: string
+                        description: Certificate Revocation Lists (Certificate Revocation Lists file
+                          name) secret name
+                      crl-partition-shared:
+                        type: integer
+                        default: 0
+                        description: Use shared partition Certificate Revocation Lists
                 cipher-without-prio-list:
                   type: array
                   items:
                     type: object
                     properties:
-                        cipher-wo-prio:
-                            type: string
-                            description: Specify the cipher-suite name
-                            enum:
-                            - SSL3_RSA_DES_192_CBC3_SHA
-                            - SSL3_RSA_RC4_128_MD5
-                            - SSL3_RSA_RC4_128_SHA
-                            - TLS1_RSA_AES_128_SHA
-                            - TLS1_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_SHA256
-                            - TLS1_RSA_AES_256_SHA256
-                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_DHE_RSA_AES_128_SHA
-                            - TLS1_DHE_RSA_AES_128_SHA256
-                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_DHE_RSA_AES_256_SHA
-                            - TLS1_DHE_RSA_AES_256_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA
-                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_RSA_AES_128_SHA
-                            - TLS1_ECDHE_RSA_AES_128_SHA256
-                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_GCM_SHA256
-                            - TLS1_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
-                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                      cipher-wo-prio:
+                        type: string
+                        description: Specify the cipher-suite name
+                        enum:
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
                 dh-type:
                   type: string
                   description: Specify Diffie Hellman Parameter
                   enum:
-                  - "1024"
-                  - "1024-dsa"
-                  - "2048"
+                    - "1024"
+                    - 1024-dsa
+                    - "2048"
                 ec-list:
                   type: array
                   items:
@@ -602,8 +615,8 @@ spec:
                         type: string
                         description: Specify Elliptic Curve Name
                         enum:
-                        - secp256r1
-                        - secp384r1
+                          - secp256r1
+                          - secp384r1
                 close-notify:
                   type: integer
                   default: 0
@@ -644,7 +657,8 @@ spec:
                   minimum: 0
                   maximum: 2147483647
                   default: 0
-                  description: Session ticket lifetime in seconds from stateless session resumption
+                  description: Session ticket lifetime in seconds from stateless session
+                    resumption
                 session-ticket-disable:
                   type: integer
                   default: 0
@@ -657,22 +671,23 @@ spec:
                   items:
                     type: object
                     properties:
-                        cert:
-                          type: string
-                          description: Specify the secret name for certificate
-                        key:
-                          type: string
-                          description: Specify the secret name for private key
-                        passphrase:
-                          type: string
-                          description: Specify the password phrase for the private key
-                        chain-cert:
-                          type : string
-                          description: Specify the secret name for Chain Certificate
+                      cert:
+                        type: string
+                        description: Specify the secret name for certificate
+                      key:
+                        type: string
+                        description: Specify the secret name for private key
+                      passphrase:
+                        type: string
+                        description: Specify the password phrase for the private key
+                      chain-cert:
+                        type: string
+                        description: Specify the secret name for Chain Certificate
                 server-name-auto-map:
                   type: integer
                   default: 0
-                  description: Enable automatic mapping of server name indication in Client hello extension
+                  description: Enable automatic mapping of server name indication in Client hello
+                    extension
                 sni-enable-log:
                   type: integer
                   default: 0
@@ -704,18 +719,19 @@ spec:
                 state:
                   type: string
       additionalPrinterColumns:
-      - name: Template Name
-        type: string
-        description: Client SSL template
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state
+        - name: Template Name
+          type: string
+          description: Client SSL template
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
     - name: v1alpha1
       served: true
       storage: false
       deprecated: true
-      deprecationWarning: tkc.a10networks.com/v1alpha1 ClientSsl deprecated.Please consider migrate to tkc.a10networks.com/v1 ClientSsl
+      deprecationWarning: tkc.a10networks.com/v1alpha1 ClientSsl deprecated.Please
+        consider migrate to tkc.a10networks.com/v1 ClientSsl
       schema:
         openAPIV3Schema:
           type: object
@@ -731,154 +747,163 @@ spec:
                   items:
                     type: object
                     properties:
-                        ca-cert:
-                          type: string
-                          description: Specify CA certificate secret name
-                        ca-shared :
-                          type: integer
-                          default: 0
-                          description: CA Certificate Partition Shared
-                        client-ocsp-srvr:
-                          type: string
-                          description: Specify ocsp authentication server(s) for client certificate verification
-                          minLength: 1
-                          maxLength: 63
-                        client-ocsp:
-                          type: integer
-                          default: 0
-                          description: Enable client certificate OCSP verification
-                        client-ocsp-sg:
-                          type: string
-                          minLength: 1
-                          maxLength: 127
-                          description: Specify service-group (Service group name) for client certificate verification
+                      ca-cert:
+                        type: string
+                        description: Specify CA certificate secret name
+                      ca-shared:
+                        type: integer
+                        default: 0
+                        description: CA Certificate Partition Shared
+                      client-ocsp-srvr:
+                        type: string
+                        description: Specify ocsp authentication server(s) for client certificate
+                          verification
+                        minLength: 1
+                        maxLength: 63
+                      client-ocsp:
+                        type: integer
+                        default: 0
+                        description: Enable client certificate OCSP verification
+                      client-ocsp-sg:
+                        type: string
+                        minLength: 1
+                        maxLength: 127
+                        description: Specify service-group (Service group name) for client certificate
+                          verification
                 server-name-list:
                   type: array
                   items:
                     type: object
                     properties:
-                        server-name:
-                          type: string
-                          minLength: 1
-                          maxLength: 63
-                          description: Server name indication in Client hello extension (SNI Server Name)
-                        server-cert:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Certificate secret name associated to the SNI
-                        server-chain:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the server Certificate Chain secret name associated to the SNI
-                        server-key:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Private Key secret name associated to the SNI
-                        server-passphrase:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the Password Phrase for the server Private Key
-                        server-shared:
-                          type: integer
-                          description: Use shared partition certificate, Key or chain
-                        server-name-alternate:
-                          type: integer
-                          description: Specify the second/alternate certificate flag
-                        server-name-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 63
-                          description: Server name indication in Client hello extension with regular expression (SNI Server name with regex)
-                        server-cert-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Certificate secret name associated to the SNI regex
-                        server-chain-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the server Certificate Chain secret name associated to the SNI regex
-                        server-key-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 245
-                          description: Specify the server Private Key secret name associated to the SNI regex
-                        server-passphrase-regex:
-                          type: string
-                          minLength: 1
-                          maxLength: 128
-                          description: Specify the Password Phrase for the server Private Key to the SNI regex
-                        server-name-regex-alternate:
-                          type: integer
-                          default: 0
-                          description: Specify the second/alternate certificate flag to the SNI regex
-                        server-shared-regex:
-                          type: integer
-                          default: 0
-                          description: Use shared partition certificate, Key or chain to the SNI regex
+                      server-name:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Server name indication in Client hello extension (SNI Server Name)
+                      server-cert:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Certificate secret name associated to the SNI
+                      server-chain:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the server Certificate Chain secret name associated to the
+                          SNI
+                      server-key:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Private Key secret name associated to the SNI
+                      server-passphrase:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the Password Phrase for the server Private Key
+                      server-shared:
+                        type: integer
+                        description: Use shared partition certificate, Key or chain
+                      server-name-alternate:
+                        type: integer
+                        description: Specify the second/alternate certificate flag
+                      server-name-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Server name indication in Client hello extension with regular
+                          expression (SNI Server name with regex)
+                      server-cert-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Certificate secret name associated to the SNI
+                          regex
+                      server-chain-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the server Certificate Chain secret name associated to the
+                          SNI regex
+                      server-key-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 245
+                        description: Specify the server Private Key secret name associated to the SNI
+                          regex
+                      server-passphrase-regex:
+                        type: string
+                        minLength: 1
+                        maxLength: 128
+                        description: Specify the Password Phrase for the server Private Key to the SNI
+                          regex
+                      server-name-regex-alternate:
+                        type: integer
+                        default: 0
+                        description: Specify the second/alternate certificate flag to the SNI regex
+                      server-shared-regex:
+                        type: integer
+                        default: 0
+                        description: Use shared partition certificate, Key or chain to the SNI regex
                 crl-certs:
                   type: array
                   items:
                     type: object
                     properties:
-                        crl:
-                          type: string
-                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
-                        crl-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Use shared partition Certificate Revocation Lists
+                      crl:
+                        type: string
+                        description: Certificate Revocation Lists (Certificate Revocation Lists file
+                          name) secret name
+                      crl-partition-shared:
+                        type: integer
+                        default: 0
+                        description: Use shared partition Certificate Revocation Lists
                 cipher-without-prio-list:
                   type: array
                   items:
                     type: object
                     properties:
-                        cipher-wo-prio:
-                            type: string
-                            description: Specify the cipher-suite name
-                            enum:
-                            - SSL3_RSA_DES_192_CBC3_SHA
-                            - SSL3_RSA_RC4_128_MD5
-                            - SSL3_RSA_RC4_128_SHA
-                            - TLS1_RSA_AES_128_SHA
-                            - TLS1_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_SHA256
-                            - TLS1_RSA_AES_256_SHA256
-                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_DHE_RSA_AES_128_SHA
-                            - TLS1_DHE_RSA_AES_128_SHA256
-                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_DHE_RSA_AES_256_SHA
-                            - TLS1_DHE_RSA_AES_256_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA
-                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_RSA_AES_128_SHA
-                            - TLS1_ECDHE_RSA_AES_128_SHA256
-                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_GCM_SHA256
-                            - TLS1_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
-                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                      cipher-wo-prio:
+                        type: string
+                        description: Specify the cipher-suite name
+                        enum:
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
                 dh-type:
                   type: string
                   description: Specify Diffie Hellman Parameter
                   enum:
-                  - "1024"
-                  - "1024-dsa"
-                  - "2048"
+                    - "1024"
+                    - 1024-dsa
+                    - "2048"
                 ec-list:
                   type: array
                   items:
@@ -888,8 +913,8 @@ spec:
                         type: string
                         description: Specify Elliptic Curve Name
                         enum:
-                        - secp256r1
-                        - secp384r1
+                          - secp256r1
+                          - secp384r1
                 close-notify:
                   type: integer
                   default: 0
@@ -930,7 +955,8 @@ spec:
                   minimum: 0
                   maximum: 2147483647
                   default: 0
-                  description: Session ticket lifetime in seconds from stateless session resumption
+                  description: Session ticket lifetime in seconds from stateless session
+                    resumption
                 session-ticket-disable:
                   type: integer
                   default: 0
@@ -943,22 +969,23 @@ spec:
                   items:
                     type: object
                     properties:
-                        cert:
-                          type: string
-                          description: Specify the secret name for certificate
-                        key:
-                          type: string
-                          description: Specify the secret name for private key
-                        passphrase:
-                          type: string
-                          description: Specify the password phrase for the private key
-                        chain-cert:
-                          type : string
-                          description: Specify the secret name for Chain Certificate
+                      cert:
+                        type: string
+                        description: Specify the secret name for certificate
+                      key:
+                        type: string
+                        description: Specify the secret name for private key
+                      passphrase:
+                        type: string
+                        description: Specify the password phrase for the private key
+                      chain-cert:
+                        type: string
+                        description: Specify the secret name for Chain Certificate
                 server-name-auto-map:
                   type: integer
                   default: 0
-                  description: Enable automatic mapping of server name indication in Client hello extension
+                  description: Enable automatic mapping of server name indication in Client hello
+                    extension
                 sni-enable-log:
                   type: integer
                   default: 0
@@ -990,27 +1017,26 @@ spec:
                 state:
                   type: string
       additionalPrinterColumns:
-      - name: Template Name
-        type: string
-        description: Client SSL template
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state        
-
+        - name: Template Name
+          type: string
+          description: Client SSL template
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
   scope: Namespaced
   names:
     plural: clientssls
     singular: clientssl
     kind: ClientSsl
     shortNames:
-    - a10clissl
+      - a10clissl
 
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-    name: serverssls.tkc.a10networks.com
+  name: serverssls.tkc.a10networks.com
 spec:
   group: tkc.a10networks.com
   versions:
@@ -1032,80 +1058,81 @@ spec:
                   items:
                     type: object
                     properties:
-                        ca-cert:
-                          type: string
-                          description: Specify CA certificate secret name
-                        server-ocsp-srvr:
-                          type: string
-                          description: Specify OCSP server for CA certificate
-                        server-ocsp-sg:
-                          type: string
-                          description: Specify OCSP service-group for CA certificate
-                        ca-cert-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Use Shared Partition CA
+                      ca-cert:
+                        type: string
+                        description: Specify CA certificate secret name
+                      server-ocsp-srvr:
+                        type: string
+                        description: Specify OCSP server for CA certificate
+                      server-ocsp-sg:
+                        type: string
+                        description: Specify OCSP service-group for CA certificate
+                      ca-cert-partition-shared:
+                        type: integer
+                        default: 0
+                        description: Use Shared Partition CA
                 server-name:
                   type: string
-                  description : Specify backend application server Name (for certificate subject or SAN check)
-
+                  description: Specify backend application server Name (for certificate subject or
+                    SAN check)
                 crl-certs:
                   type: array
                   items:
                     type: object
                     properties:
-                        crl:
-                          type: string
-                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
-                        crl-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Certificate Revocation Lists Partition Shared
+                      crl:
+                        type: string
+                        description: Certificate Revocation Lists (Certificate Revocation Lists file
+                          name) secret name
+                      crl-partition-shared:
+                        type: integer
+                        default: 0
+                        description: Certificate Revocation Lists Partition Shared
                 cipher-without-prio-list:
                   type: array
                   items:
                     type: object
                     properties:
-                        cipher-wo-prio:
-                            type: string
-                            enum:
-                            - SSL3_RSA_DES_192_CBC3_SHA
-                            - SSL3_RSA_RC4_128_MD5
-                            - SSL3_RSA_RC4_128_SHA
-                            - TLS1_RSA_AES_128_SHA
-                            - TLS1_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_SHA256
-                            - TLS1_RSA_AES_256_SHA256
-                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_DHE_RSA_AES_128_SHA
-                            - TLS1_DHE_RSA_AES_128_SHA256
-                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_DHE_RSA_AES_256_SHA
-                            - TLS1_DHE_RSA_AES_256_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA
-                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_RSA_AES_128_SHA
-                            - TLS1_ECDHE_RSA_AES_128_SHA256
-                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_GCM_SHA256
-                            - TLS1_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
-                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
-                            description: Specify cipher-suite name
+                      cipher-wo-prio:
+                        type: string
+                        enum:
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                        description: Specify cipher-suite name
                 dh-type:
                   type: string
                   enum:
-                  - "1024"
-                  - "1024-dsa"
-                  - "2048"
+                    - "1024"
+                    - 1024-dsa
+                    - "2048"
                   description: Specify Diffie Hellman Parameter
                 ec-list:
                   type: array
@@ -1115,8 +1142,8 @@ spec:
                       ec:
                         type: string
                         enum:
-                        - secp256r1
-                        - secp384r1
+                          - secp256r1
+                          - secp384r1
                         description: Specify Elliptic Curve Name
                 close-notify:
                   type: integer
@@ -1143,10 +1170,10 @@ spec:
                       error-type:
                         type: string
                         enum:
-                        - email
-                        - ignore
-                        - logging
-                        - trap
+                          - email
+                          - ignore
+                          - logging
+                          - trap
                 oscp-stapling:
                   type: integer
                   description: Enable ocsp-stapling support
@@ -1190,21 +1217,20 @@ spec:
                 state:
                   type: string
                   default: NoController
-
       additionalPrinterColumns:
-      - name: Template Name
-        type: string
-        description: Server SSL template
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state
-
+        - name: Template Name
+          type: string
+          description: Server SSL template
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
     - name: v1alpha1
       served: true
-      storage: false 
+      storage: false
       deprecated: true
-      deprecationWarning: tkc.a10networks.com/v1alpha1 Serverssl deprecated.Please consider migrate to tkc.a10networks.com/v1 Serverssl
+      deprecationWarning: tkc.a10networks.com/v1alpha1 Serverssl deprecated.Please
+        consider migrate to tkc.a10networks.com/v1 Serverssl
       schema:
         openAPIV3Schema:
           type: object
@@ -1220,80 +1246,81 @@ spec:
                   items:
                     type: object
                     properties:
-                        ca-cert:
-                          type: string
-                          description: Specify CA certificate secret name
-                        server-ocsp-srvr:
-                          type: string
-                          description: Specify OCSP server for CA certificate
-                        server-ocsp-sg:
-                          type: string
-                          description: Specify OCSP service-group for CA certificate
-                        ca-cert-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Use Shared Partition CA
+                      ca-cert:
+                        type: string
+                        description: Specify CA certificate secret name
+                      server-ocsp-srvr:
+                        type: string
+                        description: Specify OCSP server for CA certificate
+                      server-ocsp-sg:
+                        type: string
+                        description: Specify OCSP service-group for CA certificate
+                      ca-cert-partition-shared:
+                        type: integer
+                        default: 0
+                        description: Use Shared Partition CA
                 server-name:
                   type: string
-                  description : Specify backend application server Name (for certificate subject or SAN check)
-
+                  description: Specify backend application server Name (for certificate subject or
+                    SAN check)
                 crl-certs:
                   type: array
                   items:
                     type: object
                     properties:
-                        crl:
-                          type: string
-                          description: Certificate Revocation Lists (Certificate Revocation Lists file name) secret name
-                        crl-partition-shared:
-                          type: integer
-                          default: 0
-                          description: Certificate Revocation Lists Partition Shared
+                      crl:
+                        type: string
+                        description: Certificate Revocation Lists (Certificate Revocation Lists file
+                          name) secret name
+                      crl-partition-shared:
+                        type: integer
+                        default: 0
+                        description: Certificate Revocation Lists Partition Shared
                 cipher-without-prio-list:
                   type: array
                   items:
                     type: object
                     properties:
-                        cipher-wo-prio:
-                            type: string
-                            enum:
-                            - SSL3_RSA_DES_192_CBC3_SHA
-                            - SSL3_RSA_RC4_128_MD5
-                            - SSL3_RSA_RC4_128_SHA
-                            - TLS1_RSA_AES_128_SHA
-                            - TLS1_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_SHA256
-                            - TLS1_RSA_AES_256_SHA256
-                            - TLS1_DHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_DHE_RSA_AES_128_SHA
-                            - TLS1_DHE_RSA_AES_128_SHA256
-                            - TLS1_DHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_DHE_RSA_AES_256_SHA
-                            - TLS1_DHE_RSA_AES_256_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA
-                            - TLS1_ECDHE_ECDSA_AES_128_SHA256
-                            - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA
-                            - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
-                            - TLS1_ECDHE_RSA_AES_128_SHA
-                            - TLS1_ECDHE_RSA_AES_128_SHA256
-                            - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA
-                            - TLS1_RSA_AES_128_GCM_SHA256
-                            - TLS1_RSA_AES_256_GCM_SHA384
-                            - TLS1_ECDHE_RSA_AES_256_SHA384
-                            - TLS1_ECDHE_ECDSA_AES_256_SHA384
-                            - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
-                            - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
-                            description: Specify cipher-suite name
+                      cipher-wo-prio:
+                        type: string
+                        enum:
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                        description: Specify cipher-suite name
                 dh-type:
                   type: string
                   enum:
-                  - "1024"
-                  - "1024-dsa"
-                  - "2048"
+                    - "1024"
+                    - 1024-dsa
+                    - "2048"
                   description: Specify Diffie Hellman Parameter
                 ec-list:
                   type: array
@@ -1303,8 +1330,8 @@ spec:
                       ec:
                         type: string
                         enum:
-                        - secp256r1
-                        - secp384r1
+                          - secp256r1
+                          - secp384r1
                         description: Specify Elliptic Curve Name
                 close-notify:
                   type: integer
@@ -1331,10 +1358,10 @@ spec:
                       error-type:
                         type: string
                         enum:
-                        - email
-                        - ignore
-                        - logging
-                        - trap
+                          - email
+                          - ignore
+                          - logging
+                          - trap
                 oscp-stapling:
                   type: integer
                   description: Enable ocsp-stapling support
@@ -1378,23 +1405,21 @@ spec:
                 state:
                   type: string
                   default: NoController
-
       additionalPrinterColumns:
-      - name: Template Name
-        type: string
-        description: Server SSL template
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state    
-
+        - name: Template Name
+          type: string
+          description: Server SSL template
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
   scope: Namespaced
   names:
     plural: serverssls
     singular: serverssl
     kind: ServerSsl
     shortNames:
-    - a10srvssl
+      - a10srvssl
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -1409,130 +1434,130 @@ spec:
     singular: servicegroup
     kind: ServiceGroup
     shortNames:
-    - a10sg
+      - a10sg
   versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          metadata:
-            type: object
-            properties:
-              name:
-                type: string
-          spec:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-                maxLength: 127
-                description: "Specify the service-group name"
-              service:
-                type: string
-                description: "Specify k8s service that bind to the service-group"
-              protocol:
-                type: string
-                enum:
-                - tcp
-                - udp
-                default: "tcp"
-                description: "Specify the service-group protocol"
-              healthCheck:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the health monitor for the service-group"
-              healthCheckDisable:
-                type: integer
-                minimum: 0
-                maximum: 1
-                default: 0
-                description: "Disable health monitor for the service-group"
-              loadBalanceMethod:
-                type: string
-                enum:
-                - dst-ip-hash
-                - dst-ip-only-hash
-                - fastest-response
-                - least-request
-                - src-ip-hash
-                - src-ip-only-hash
-                - weighted-rr
-                - service-weighted-rr
-                - round-robin
-                - round-robin-strict
-                - odd-even-hash
-                - service-least-connection
-                - least-connection
-                - weighted-least-connection
-                - service-weighted-least-connection
-                default: "round-robin"
-                description: "Specify the loadbalance method for the service-group"
-              serverHealthCheck:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the health monitor for the servers in this service-group"
-              templateServer:
-                type: string
-                minLength: 1
-                maxLength: 127
-                description: "Specify Template SLB Server"
-              status:
-                type: string
-                default: "NoController"
-              pseudoRoundRobin:
-                type: integer
-                minimum: 0
-                maximum: 1
-                default: 0
-                description: "Select the oldest node for sub-select"
-              resetOnServerSelectionFail:
-                type: integer
-                minimum: 0
-                maximum: 1
-                default: 0
-                description: "Send reset to client if server selection fails"
-              healthCheckFollowPort:
-                type: integer
-                minimum: 1
-                maximum: 65534
-                description: "Specify which port to follow for health status (Port Number)"
-              portHealthCheck:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the health monitor for the server port"
-              templatePort:
-                type: string
-                minLength: 1
-                maxLength: 127
-                description: "Specify TemplatePort"
-            required:
-              - name
-              - service
-    additionalPrinterColumns:
-    - name: name
-      type: string
-      description: The service-group Name
-      jsonPath: .spec.name
-    - name: status
-      type: string
-      jsonPath: .spec.status
-    - name: service
-      type: string
-      jsonPath: .spec.service
-    - name: protocol
-      type: string
-      jsonPath: .spec.protocol
-    - name: method
-      type: string
-      jsonPath: .spec.loadBalanceMethod
-      
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                name:
+                  type: string
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: Specify the service-group name
+                service:
+                  type: string
+                  description: Specify k8s service that bind to the service-group
+                protocol:
+                  type: string
+                  enum:
+                    - tcp
+                    - udp
+                  default: tcp
+                  description: Specify the service-group protocol
+                healthCheck:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: Specify the health monitor for the service-group
+                healthCheckDisable:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  default: 0
+                  description: Disable health monitor for the service-group
+                loadBalanceMethod:
+                  type: string
+                  enum:
+                    - dst-ip-hash
+                    - dst-ip-only-hash
+                    - fastest-response
+                    - least-request
+                    - src-ip-hash
+                    - src-ip-only-hash
+                    - weighted-rr
+                    - service-weighted-rr
+                    - round-robin
+                    - round-robin-strict
+                    - odd-even-hash
+                    - service-least-connection
+                    - least-connection
+                    - weighted-least-connection
+                    - service-weighted-least-connection
+                  default: round-robin
+                  description: Specify the loadbalance method for the service-group
+                serverHealthCheck:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: Specify the health monitor for the servers in this service-group
+                templateServer:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: Specify Template SLB Server
+                status:
+                  type: string
+                  default: NoController
+                pseudoRoundRobin:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  default: 0
+                  description: Select the oldest node for sub-select
+                resetOnServerSelectionFail:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  default: 0
+                  description: Send reset to client if server selection fails
+                healthCheckFollowPort:
+                  type: integer
+                  minimum: 1
+                  maximum: 65534
+                  description: Specify which port to follow for health status (Port Number)
+                portHealthCheck:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: Specify the health monitor for the server port
+                templatePort:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: Specify TemplatePort
+              required:
+                - name
+                - service
+      additionalPrinterColumns:
+        - name: name
+          type: string
+          description: The service-group Name
+          jsonPath: .spec.name
+        - name: status
+          type: string
+          jsonPath: .spec.status
+        - name: service
+          type: string
+          jsonPath: .spec.service
+        - name: protocol
+          type: string
+          jsonPath: .spec.protocol
+        - name: method
+          type: string
+          jsonPath: .spec.loadBalanceMethod
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1557,7 +1582,10 @@ spec:
                   type: string
                 ip-pool:
                   type: string
-                  description: "Specify the Calico IPPool name (since TKC v2.0)"
+                  description: Specify the Calico IPPool name (since TKC v2.0)
+                acl-id:
+                  type: integer
+                  description: Specify the Access list ID
             status:
               type: object
               properties:
@@ -1565,26 +1593,27 @@ spec:
                   type: string
                   default: NoController
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        description: Specify the virtual-server name
-        jsonPath: .spec.name
-      - name: VIP 
-        type: string
-        description: Specify the IP Address for the virtual-server
-        jsonPath: .spec.ip-address
-      - name: IPAM
-        type: string
-        description: Specify the IPAM IP Pool name
-        jsonPath: .spec.ip-pool
-      - name: Status
-        type: string
-        jsonPath: .status.state
+        - name: Name
+          type: string
+          description: Specify the virtual-server name
+          jsonPath: .spec.name
+        - name: VIP
+          type: string
+          description: Specify the IP Address for the virtual-server
+          jsonPath: .spec.ip-address
+        - name: IPAM
+          type: string
+          description: Specify the IPAM IP Pool name
+          jsonPath: .spec.ip-pool
+        - name: Status
+          type: string
+          jsonPath: .status.state
     - name: v1alpha1
       served: true
       storage: false
       deprecated: true
-      deprecationWarning: tkc.a10networks.com/v1alpha1 VirtualServer deprecated.Please consider migrate to tkc.a10networks.com/v1 VirtualServer
+      deprecationWarning: tkc.a10networks.com/v1alpha1 VirtualServer deprecated.Please
+        consider migrate to tkc.a10networks.com/v1 VirtualServer
       schema:
         openAPIV3Schema:
           type: object
@@ -1598,7 +1627,10 @@ spec:
                   type: string
                 ip-pool:
                   type: string
-                  description: "Specify the Calico IPPool name (since TKC v2.0)"
+                  description: Specify the Calico IPPool name (since TKC v2.0)
+                acl-id:
+                  type: integer
+                  description: Specify the Access list ID
             status:
               type: object
               properties:
@@ -1606,29 +1638,28 @@ spec:
                   type: string
                   default: NoController
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        description: Specify the virtual-server name
-        jsonPath: .spec.name
-      - name: VIP 
-        type: string
-        description: Specify the IP Address for the virtual-server
-        jsonPath: .spec.ip-address
-      - name: IPAM
-        type: string
-        description: Specify the IPAM IP Pool name
-        jsonPath: .spec.ip-pool
-      - name: Status
-        type: string
-        jsonPath: .status.state    
+        - name: Name
+          type: string
+          description: Specify the virtual-server name
+          jsonPath: .spec.name
+        - name: VIP
+          type: string
+          description: Specify the IP Address for the virtual-server
+          jsonPath: .spec.ip-address
+        - name: IPAM
+          type: string
+          description: Specify the IPAM IP Pool name
+          jsonPath: .spec.ip-pool
+        - name: Status
+          type: string
+          jsonPath: .status.state
   names:
     kind: VirtualServer
     plural: virtualservers
     singular: virtualserver
     shortNames:
-    - a10vip
+      - a10vip
   scope: Namespaced
-
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -1662,70 +1693,70 @@ spec:
               properties:
                 virtualServer:
                   type: string
-                  description: "Specify the virtual-server name for the virtual-port"
+                  description: Specify the virtual-server name for the virtual-port
                 port:
                   type: integer
                   minimum: 0
                   maximum: 65534
-                  description: "Specify port number for the virtual-port"
+                  description: Specify port number for the virtual-port
                 protocol:
                   type: string
                   enum:
-                  - tcp
-                  - udp
-                  - others
-                  - diameter
-                  - dns-tcp
-                  - dns-udp
-                  - fast-http
-                  - fix
-                  - ftp
-                  - ftp-proxy
-                  - http
-                  - https
-                  - imap
-                  - mlb
-                  - mms
-                  - mysql
-                  - mssql
-                  - pop3
-                  - radius
-                  - rtsp
-                  - sip
-                  - sip-tcp
-                  - sips
-                  - smpp-tcp
-                  - spdy
-                  - mqtt
-                  - mqtts
-                  - ssl-proxy
-                  - ssli
-                  - ssh
-                  - tcp-proxy
-                  - tftp
-                  - fast-fix
-                  description: "Specify the virtual-port protocol type"
+                    - tcp
+                    - udp
+                    - others
+                    - diameter
+                    - dns-tcp
+                    - dns-udp
+                    - fast-http
+                    - fix
+                    - ftp
+                    - ftp-proxy
+                    - http
+                    - https
+                    - imap
+                    - mlb
+                    - mms
+                    - mysql
+                    - mssql
+                    - pop3
+                    - radius
+                    - rtsp
+                    - sip
+                    - sip-tcp
+                    - sips
+                    - smpp-tcp
+                    - spdy
+                    - mqtt
+                    - mqtts
+                    - ssl-proxy
+                    - ssli
+                    - ssh
+                    - tcp-proxy
+                    - tftp
+                    - fast-fix
+                  description: Specify the virtual-port protocol type
                 ingress:
                   type: string
                   minLength: 1
                   maxLength: 63
-                  description: "Specify the Ingress that bind to this virtual-port"
+                  description: Specify the Ingress that bind to this virtual-port
                 ocRoute:
                   type: string
                   minLength: 1
                   maxLength: 63
-                  description: "Specify the Route (in OpenShift) that bind to this virtual-port"
+                  description: Specify the Route (in OpenShift) that bind to this virtual-port
                 action:
                   type: string
-                  description: "Enable or Disable the virtual-port"
+                  description: Enable or Disable the virtual-port
                   enum:
-                  - enable
-                  - disable
+                    - enable
+                    - disable
                 http2:
                   type: integer
                   minimum: 0
                   maximum: 1
-                  description: "Support HTTP2"
+                  description: Support HTTP2
                 aflex:
                   type: array
                   items:
@@ -1735,103 +1766,106 @@ spec:
                         type: string
                         minLength: 1
                         maxLength: 63
-                        description: "Specify the aflex script for the virtual-port"
+                        description: Specify the aflex script for the virtual-port
                 snatPool:
                   type: string
                   minLength: 1
                   maxLength: 63
-                  description: "Specify Source NAT pool or pool group"
+                  description: Specify Source NAT pool or pool group
                 snatAuto:
                   type: integer
                   minimum: 0
                   maximum: 1
-                  description: "Configure auto Source NAT for the vport"
+                  description: Configure auto Source NAT for the vport
                 serviceGroup:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the service-group for the virtual-port. If not specified,  TKC will use the service-group that bind to the service"
+                  description: Specify the service-group for the virtual-port. If not
+                    specified,  TKC will use the service-group that bind to the
+                    service
                 serverSslTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the server-ssl template for the virtual-port"
+                  description: Specify the server-ssl template for the virtual-port
                 clientSslTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the client-ssl template for the virtual-port"
+                  description: Specify the client-ssl template for the virtual-port
                 policyTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the policy template for the virtual-port"
+                  description: Specify the policy template for the virtual-port
                 httpTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the http template for the virtual-port"
+                  description: Specify the http template for the virtual-port
                 httpPolicyTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the http-policy template for the virtual-port"
+                  description: Specify the http-policy template for the virtual-port
                 virtualPortTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the virtual-port template for the virtual-port"
+                  description: Specify the virtual-port template for the virtual-port
                 tcpTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the tcp template for the virtual-port"
+                  description: Specify the tcp template for the virtual-port
                 tcpProxyTemplate:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Specify the tcp-proxy template for the virtual-port"
+                  description: Specify the tcp-proxy template for the virtual-port
                 noDestNat:
                   type: integer
                   minimum: 0
                   maximum: 1
-                  description: "Disable destination NAT, this option only supports in wildcard VIP or when a connection is operated in SSLi + EP mode"
+                  description: Disable destination NAT, this option only supports in wildcard VIP
+                    or when a connection is operated in SSLi + EP mode
                 portTranslation:
                   type: integer
                   minimum: 0
                   maximum: 1
-                  description: "Enable port translation under no-dest-nat"
+                  description: Enable port translation under no-dest-nat
                 userTag:
                   type: string
                   minLength: 1
                   maxLength: 127
-                  description: "Customized tag for virtual-port"
+                  description: Customized tag for virtual-port
                 status:
                   type: string
-                  default: "NoController"
+                  default: NoController
               required:
                 - virtualServer
                 - port
                 - protocol
       additionalPrinterColumns:
-      - name: port
-        type: integer
-        jsonPath: .spec.port
-      - name: protocol
-        type: string
-        jsonPath: .spec.protocol
-      - name: status
-        type: string
-        jsonPath: .spec.status
-      - name: virtualServer
-        type: string
-        jsonPath: .spec.virtualServer
-      - name: ingress
-        type: string
-        jsonPath: .spec.ingress
-      - name: route
-        type: string
-        jsonPath: .spec.ocRoute
+        - name: port
+          type: integer
+          jsonPath: .spec.port
+        - name: protocol
+          type: string
+          jsonPath: .spec.protocol
+        - name: status
+          type: string
+          jsonPath: .spec.status
+        - name: virtualServer
+          type: string
+          jsonPath: .spec.virtualServer
+        - name: ingress
+          type: string
+          jsonPath: .spec.ingress
+        - name: route
+          type: string
+          jsonPath: .spec.ocRoute
 
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -1853,47 +1887,47 @@ spec:
               properties:
                 name:
                   type: string
-                  description: "Template SLB Server Name"
+                  description: Template SLB Server Name
                 conn-limit:
                   type: integer
                   minimum: 1
                   maximum: 64000000
                   default: 64000000
-                  description: "Connection limit"
+                  description: Connection limit
                 conn-rate-limit:
                   type: integer
                   minimum: 1
                   maximum: 1048575
-                  description: "Connection rate limit"
+                  description: Connection rate limit
                 allow-syn-otherflags:
                   type: boolean
-                  description: "Enable or Disable allow-syn-otherflags"
+                  description: Enable or Disable allow-syn-otherflags
                 reset-unknown-conn:
                   type: boolean
-                  description: "Enable or Disable reset-unknown-conn"
+                  description: Enable or Disable reset-unknown-conn
                 user-tag:
                   type: string
-                  description: "User Tag" 
+                  description: User Tag
               required:
-                - name         
+                - name
             status:
               type: object
               properties:
                 state:
                   type: string
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        jsonPath: .spec.name 
-      - name: Status
-        type: string
-        jsonPath: .status.state  
+        - name: Name
+          type: string
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
   names:
     kind: TemplateVirtualPort
     plural: templatevirtualports
     singular: templatevirtualport
     shortNames:
-    - a10tvp
+      - a10tvp
   scope: Namespaced
 
 ---
@@ -1920,29 +1954,30 @@ spec:
                   type: string
                 secret:
                   type: string
-                  description: "Specify the secret with respect to the thunder device"
+                  description: Specify the secret with respect to the thunder device
                 partition:
                   type: string
-                  description: "Specify the thunder partition to be used"
-                  default: "shared"
+                  description: Specify the thunder partition to be used
+                  default: shared
                 status:
                   type: string
-                  default: "NoController"
+                  default: NoController
                 axapiTimeout:
                   type: integer
-                  description: "Specify a time limit for aXAPI requests"
+                  description: Specify a time limit for aXAPI requests
                   minimum: 1
                   maximum: 60
                   default: 3
                 axapiRetries:
                   type: integer
-                  description: "Specify the max retries when connection failed to ACOS"
+                  description: Specify the max retries when connection failed to ACOS
                   minimum: 0
                   maximum: 10
                   default: 2
                 axapiRetryBackoffTime:
                   type: integer
-                  description: "Specify backoff time for aXAPI retry when ACOS is not ready or connection lost"
+                  description: Specify backoff time for aXAPI retry when ACOS is not ready or
+                    connection lost
                   minimum: 0
                   maximum: 60
                   default: 0
@@ -1951,32 +1986,33 @@ spec:
                 - ip-address
                 - secret
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        description: Specify the thunder name
-        jsonPath: .spec.name
-      - name: IP-Address 
-        type: string
-        description: Specify IP Address of the thunder
-        jsonPath: .spec.ip-address
-      - name: Secret
-        type: string
-        description: Specify Secret of the thunder
-        jsonPath: .spec.secret
-      - name: Partition
-        type: string
-        description: Specify partition of the thunder
-        jsonPath: .spec.partition
-      - name: Status
-        type: string
-        jsonPath: .spec.status    
+        - name: Name
+          type: string
+          description: Specify the thunder name
+          jsonPath: .spec.name
+        - name: IP-Address
+          type: string
+          description: Specify IP Address of the thunder
+          jsonPath: .spec.ip-address
+        - name: Secret
+          type: string
+          description: Specify Secret of the thunder
+          jsonPath: .spec.secret
+        - name: Partition
+          type: string
+          description: Specify partition of the thunder
+          jsonPath: .spec.partition
+        - name: Status
+          type: string
+          jsonPath: .spec.status
   names:
     kind: ActiveActiveHADevice
     plural: activeactivehadevices
     singular: activeactivehadevice
     shortNames:
-    - a10activehadevice
+      - a10activehadevice
   scope: Namespaced
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2003,39 +2039,39 @@ spec:
                   minimum: 1
                   maximum: 64000000
                   default: 64000000
-                  description: "Connection limit"
+                  description: Connection limit
                 conn-rate-limit:
                   type: integer
                   minimum: 1
                   maximum: 1048575
-                  description: "Connection rate limit"
+                  description: Connection rate limit
                 user-tag:
                   type: string
                   minLength: 1
                   maxLength: 64
-                  description: "User Tag"
+                  description: User Tag
               required:
-              - name    
+                - name
             status:
               type: object
               properties:
                 state:
                   type: string
       additionalPrinterColumns:
-      - name: Name
-        type: string
-        jsonPath: .spec.name 
-      - name: Status
-        type: string
-        jsonPath: .status.state  
+        - name: Name
+          type: string
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
   names:
     kind: TemplateSlbServer
     plural: templateslbservers
     singular: templateslbserver
     shortNames:
-    - a10tslbserver
+      - a10tslbserver
   scope: Namespaced
-  
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2050,11 +2086,11 @@ spec:
       schema:
         openAPIV3Schema:
           type: object
-          x-kubernetes-validations:
+          x-kubernetes-validations: null
           properties:
             spec:
               type: object
-              properties:         
+              properties:
                 name:
                   description: Port template name
                   maxLength: 127
@@ -2064,8 +2100,7 @@ spec:
                   description: Customized tag
                   maxLength: 127
                   minLength: 1
-                  type: string   
-                #connection limit configuration  
+                  type: string
                 conn-limit:
                   description: Connection limit
                   default: 64000000
@@ -2090,8 +2125,7 @@ spec:
                     threshold (Connection resume threshold)
                   maximum: 1048575
                   minimum: 1
-                  type: number    
-                #slow start configuration  
+                  type: number
                 slow-start-enable:
                   description: Slowly ramp up the connection number after port is up
                   default: 0
@@ -2101,9 +2135,10 @@ spec:
                   default: 128
                   maximum: 4095
                   minimum: 1
-                  type: number  
+                  type: number
                 slow-start-conn-limit-add:
-                  description: Slow start connection limit add by a number every interval (Add by this number every interval)
+                  description: Slow start connection limit add by a number every interval (Add by
+                    this number every interval)
                   maximum: 4095
                   minimum: 1
                   type: number
@@ -2111,30 +2146,30 @@ spec:
                   description: Slow start connection limit increment interval (default 10)
                   maximum: 60
                   minimum: 1
-                  default: 10  
+                  default: 10
                   type: number
                 slow-start-conn-limit-max-threshold:
                   description: Slow start ends when slow start connection limit reaches a number
-                    (default 4096) (Slow start ends when connection limit reaches this number)
+                    (default 4096) (Slow start ends when connection limit
+                    reaches this number)
                   default: 4096
                   maximum: 65535
                   minimum: 1
                   type: number
                 slow-start-conn-limit-increment-multiplier:
                   default: 2
-                  description: Slow start connection limit multiply by a number every interval (default
-                    2) (Multiply by this number every interval), add and times are mutually exclusive
+                  description: Slow start connection limit multiply by a number every interval
+                    (default 2) (Multiply by this number every interval), add
+                    and times are mutually exclusive
                   maximum: 10
                   minimum: 2
-                  type: number 
+                  type: number
                 decrement:
                   description: Decrease after every round of DNS query (default is 0)
                   default: 0
                   maximum: 7
                   minimum: 0
                   type: number
-                #---------Below Options are in available as experimental -------------# 
-                # Warning - Config options for below section might fail  
                 dest-nat:
                   default: 0
                   description: Destination NAT
@@ -2146,12 +2181,14 @@ spec:
                   type: number
                 del-session-on-server-down:
                   default: 0
-                  description: Delete session if the server/port goes down (either disabled/hm down)
-                  type: number  
+                  description: Delete session if the server/port goes down (either disabled/hm
+                    down)
+                  type: number
                 down-timer:
                   default: 0
-                  description: The timer to bring the marked down server/port to up (default is
-                    0, never bring up) (The timer to bring up server (in second, default is 0))
+                  description: The timer to bring the marked down server/port to up (default is 0,
+                    never bring up) (The timer to bring up server (in second,
+                    default is 0))
                   maximum: 255
                   minimum: 0
                   type: number
@@ -2165,42 +2202,44 @@ spec:
                   description: Set dynamic member's priority (Initial priority (default is 16))
                   default: 16
                   maximum: 16
-                  minimum: 1 
+                  minimum: 1
                   type: number
                 extended-stats:
                   default: 0
-                  description: Enable extended statistics on real server port,health-check and health-check-disable are mutually exclusive
-                  type: number 
+                  description: Enable extended statistics on real server port,health-check and
+                    health-check-disable are mutually exclusive
+                  type: number
                 source-nat:
-                  description: Source NAT (IP NAT Pool or pool group name),mutually exclusive with shared-partition-pool
+                  description: Source NAT (IP NAT Pool or pool group name),mutually exclusive with
+                    shared-partition-pool
                   maxLength: 128
                   minLength: 1
-                  type: string   
+                  type: string
                 no-ssl:
                   description: No SSL
                   default: 0
                   type: number
                 rate-interval:
-                  description: '''100ms'': Use 100 ms as sampling interval; ''second'': Use 1 second
-                    as sampling interval; '
-                  default: second  
+                  description: "'100ms': Use 100 ms as sampling interval; 'second': Use 1 second
+                    as sampling interval; "
+                  default: second
                   enum:
-                  - 100ms
-                  - second
+                    - 100ms
+                    - second
                   type: string
                 resel-on-reset:
                   description: When receiving reset from server, do the server/port reselection
                     (default is 0, don't do reselection)
-                  default: 0  
+                  default: 0
                   type: number
                 stats-data-action:
                   default: stats-data-enable
-                  description: '''stats-data-enable'': Enable statistical data collection for real
-                    server port; ''stats-data-disable'': Disable statistical data collection for
-                    real server port; ' 
+                  description: "'stats-data-enable': Enable statistical data collection for real
+                    server port; 'stats-data-disable': Disable statistical data
+                    collection for real server port; "
                   enum:
-                  - stats-data-enable
-                  - stats-data-disable
+                    - stats-data-enable
+                    - stats-data-disable
                   type: string
                 sub-group:
                   description: Divide service group members into different sub groups (Sub group
@@ -2212,33 +2251,32 @@ spec:
                 template-port-pool-shared:
                   description: Source NAT (IP NAT Pool or pool group name)
                   maxLength: 128
-                  minLength: 1   
+                  minLength: 1
                   type: string
                 weight:
                   default: 1
                   description: Weight (port weight)
                   maximum: 1000
-                  minimum: 1 
+                  minimum: 1
                   type: number
-                
                 shared-partition-pool:
                   default: 0
-                  description: Reference a NAT pool or pool-group from shared partition,mutually exclusive with source-nat
-                  type: number 
-                # request rate configuration
+                  description: Reference a NAT pool or pool-group from shared partition,mutually
+                    exclusive with source-nat
+                  type: number
                 request-rate-interval:
-                  description: '''100ms'': Use 100 ms as sampling interval; ''second'': Use 1 second
-                    as sampling interval; '
+                  description: "'100ms': Use 100 ms as sampling interval; 'second': Use 1 second
+                    as sampling interval; "
                   default: second
                   enum:
-                  - 100ms
-                  - second
+                    - 100ms
+                    - second
                   type: string
                 request-rate-limit:
                   description: Request rate limit
                   maximum: 1048575
                   minimum: 1
-                  type: number 
+                  type: number
                 request-rate-no-logging:
                   description: Do not log connection over limit event
                   default: 0
@@ -2246,18 +2284,17 @@ spec:
                 request-rate-reset:
                   description: Send client reset when connection rate over limit
                   default: 0
-                  type: number     
-                #health check configuration
+                  type: number
                 health-check:
                   description: Health Check Monitor (Health monitor name)
                   maxLength: 63
                   minLength: 1
                   type: string
                 health-check-disable:
-                  description: Disable configured health check configuration, health-check and health-check-disable are mutually exclusive
+                  description: Disable configured health check configuration, health-check and
+                    health-check-disable are mutually exclusive
                   default: 0
                   type: number
-                #inband health check configuration  
                 inband-health-check:
                   default: 0
                   description: Use inband traffic to detect port's health status
@@ -2268,15 +2305,14 @@ spec:
                     is 25) (The maximum reassign number)
                   maximum: 255
                   minimum: 0
-                  type: number  
+                  type: number
                 inband-health-check-retry:
-                  description: Maximum retry times before reassign this connection to another server/port
-                    (default is 2) (The maximum retry number)
+                  description: Maximum retry times before reassign this connection to another
+                    server/port (default is 2) (The maximum retry number)
                   default: 2
                   maximum: 7
                   minimum: 0
-                  type: number  
-                #Flap configuration
+                  type: number
                 dampening-flaps:
                   description: service dampening flaps count (max-flaps allowed in flap period)
                   maximum: 255
@@ -2292,10 +2328,10 @@ spec:
                   description: put the service back to the rotation after time in seconds
                   maximum: 4095
                   minimum: 1
-                  type: number   
-               #bandwidth configuration
+                  type: number
                 bw-rate-limit:
-                  description: Configure bandwidth rate limit on real server port (Bandwidth rate limit in Kbps)
+                  description: Configure bandwidth rate limit on real server port (Bandwidth rate
+                    limit in Kbps)
                   maximum: 16777216
                   minimum: 1
                   type: number
@@ -2309,28 +2345,410 @@ spec:
                   default: 0
                   type: number
                 bw-rate-limit-resume:
-                  description: Resume server selection after bandwidth drops below this threshold (in Kbps) (Bandwidth rate limit resume threshold (in Kbps))
+                  description: Resume server selection after bandwidth drops below this threshold
+                    (in Kbps) (Bandwidth rate limit resume threshold (in Kbps))
                   maximum: 16777216
                   minimum: 1
-                  type: number  
+                  type: number
               required:
-                - name        
+                - name
             status:
               type: object
               properties:
                 state:
                   type: string
       additionalPrinterColumns:
-      - name: TemplatePortName 
-        type: string
-        jsonPath: .spec.name
-      - name: Status
-        type: string
-        jsonPath: .status.state 
+        - name: TemplatePortName
+          type: string
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
   names:
     kind: TemplatePort
     plural: templateports
     singular: templateport
     shortNames:
-    - a10tport
+      - a10tport
+  scope: Namespaced
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templatetcpproxies.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Template Tcp Proxy Name
+                backendWscale:
+                  type: integer
+                  minimum: 1
+                  maximum: 14
+                  description: The TCP window scale used for the server side
+                idleTimeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 2097151
+                  default: 600
+                  description: Idle Timeout in interval of 60 seconds
+                halfCloseIdleTimeout:
+                  type: integer
+                  minimum: 60
+                  maximum: 120
+                  description: TCP Half Close Idle Timeout in seconds
+                retransmitRetries:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                  default: 5
+                  description: Number of Retries for retransmit
+                synRetries:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                  default: 5
+                  description: SYN Retry Numbers
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+        - name: Name
+          type: string
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
+  names:
+    kind: TemplateTcpProxy
+    plural: templatetcpproxies
+    singular: templatetcpproxy
+    shortNames:
+      - a10ttp
+  scope: Namespaced
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templateexternalservices.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Template External Service Name
+                requestHeaderForwardList:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      requestHeaderForward:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Request header to be forwarded to external service (Header Name)
+                timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 200
+                  default: 5
+                  description: Timeout value in units of 200ms
+                action:
+                  type: string
+                  default: continue
+                  description: "Supported values: continue, drop, reset"
+                serviceGroup:
+                  type: string
+                  description: Service group name to be binded to the template
+                templateTcpProxy:
+                  type: string
+                  description: Tcp proxy template to be attached to the template
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+        - name: Name
+          type: string
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
+  names:
+    kind: TemplateExternalService
+    plural: templateexternalservices
+    singular: templateexternalservice
+    shortNames:
+      - a10tes
+  scope: Namespaced
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: accesslistextendeds.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  minimum: 100
+                  maximum: 199
+                  description: IP extended access list
+                rules:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    properties:
+                      seqNum:
+                        type: integer
+                        minimum: 1
+                        maximum: 8192
+                        description: Sequence number
+                      remark:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Access list entry comment (Notes for this ACL)
+                      action:
+                        type: string
+                        description: "'deny': Deny; 'permit': Permit; 'l3-vlan-fwd-disable': Disable
+                          L3forwarding between VLANs;"
+                        enum:
+                          - deny
+                          - permit
+                          - l3-vlan-fwd-disable
+                      protocol:
+                        type: string
+                        description: Specify the protocol type ip, tcp,udp
+                        enum:
+                          - tcp
+                          - ip
+                          - udp
+                          - icmp
+                      source:
+                        type: object
+                        properties:
+                          any:
+                            type: integer
+                            default: 0
+                            description: Any source host
+                          network:
+                            type: string
+                            description: Specify the ip address and cidr
+                          portNumberEq:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets on a given source port (port number)
+                          portNumberGt:
+                            type: integer
+                            minimum: 1
+                            maximum: 65534
+                            description: Match only packets with a greater port number
+                          portNumberLt:
+                            type: integer
+                            minimum: 2
+                            maximum: 65535
+                            description: Match only packets with a lower port number
+                          portNumberRangeStart:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets in the range of port numbers (Starting Port
+                              Number)
+                          portNumberRangeEnd:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Ending Port Number
+                      destination:
+                        type: object
+                        properties:
+                          any:
+                            type: integer
+                            default: 0
+                            description: Any destination host
+                          network:
+                            type: string
+                            description: Specify the ip address and cidr
+                          portNumberEq:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets on a given destination port (port number)
+                          portNumberGt:
+                            type: integer
+                            minimum: 1
+                            maximum: 65534
+                            description: Match only packets with a greater port number
+                          portNumberLt:
+                            type: integer
+                            minimum: 2
+                            maximum: 65535
+                            description: Match only packets with a lesser port number
+                          portNumberRangeStart:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets in the range of port numbers (Starting
+                              Destination Port Number)
+                          portNumberRangeEnd:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Ending Destination Port Number
+              required:
+                - id
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                attachedToVip:
+                  type: boolean
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: id
+          type: string
+          jsonPath: .spec.id
+        - name: Status
+          type: string
+          jsonPath: .status.state
+        - name: AttachedToVip
+          type: boolean
+          jsonPath: .status.attachedToVip
+  names:
+    kind: AccessListExtended
+    plural: accesslistextendeds
+    singular: accesslistextended
+    shortNames:
+      - a10acle
+  scope: Namespaced
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: accessliststandards.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: IP standard access list
+                  minimum: 1
+                  maximum: 99
+                rules:
+                  type: array 
+                  items:
+                    type: object  
+                    properties:
+                      seqNum:
+                        type: integer
+                        minimum: 1
+                        maximum: 8192
+                        description: Sequence integer
+                      remark:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Access list entry comment (Notes for this ACL)
+                      action:
+                        type: string
+                        description: "'deny': Deny; 'permit': Permit; 'l3-vlan-fwd-disable': Disable
+                          L3 forwarding between VLANs;"
+                        enum:
+                        - deny
+                        - permit
+                        - l3-vlan-fwd-disable
+                      any:
+                        type: integer
+                        default: 0
+                        not-list:
+                        - host
+                        - subnet
+                        description: Any source host,mutual exclusive with network
+                      network:
+                        type: string
+                        description: IP address or netwrok in cidr notation,mutual exclusive with any
+              required:
+                  - id
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                attachedToVip:
+                  type: boolean  
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+      - name: id
+        type: string
+        jsonPath: .spec.id
+      - name: Status 
+        type: string
+        jsonPath: .status.state
+      - name: AttachedToVirtualServer
+        type: boolean
+        jsonPath: .status.attachedToVip 
+  names:
+    kind: AccessListStandard
+    plural: accessliststandards
+    singular: accessliststandard
+    shortNames:
+    - a10acls
   scope: Namespaced

@@ -1,0 +1,150 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: accesslistextendeds.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  minimum: 100
+                  maximum: 199
+                  description: IP extended access list
+                rules:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    properties:
+                      seqNum:
+                        type: integer
+                        minimum: 1
+                        maximum: 8192
+                        description: Sequence number
+                      remark:
+                        type: string
+                        minLength: 1
+                        maxLength: 63
+                        description: Access list entry comment (Notes for this ACL)
+                      action:
+                        type: string
+                        description: "'deny': Deny; 'permit': Permit; 'l3-vlan-fwd-disable': Disable L3
+                          forwarding between VLANs;"
+                        enum:
+                          - deny
+                          - permit
+                          - l3-vlan-fwd-disable
+                      protocol:
+                        type: string
+                        description: Specify the protocol type ip, tcp,udp
+                        enum:
+                          - tcp
+                          - ip
+                          - udp
+                          - icmp
+                      source:
+                        type: object
+                        properties:
+                          any:
+                            type: integer
+                            default: 0
+                            description: Any source host
+                          network:
+                            type: string
+                            description: Specify the ip address and cidr
+                          portNumberEq:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets on a given source port (port number)
+                          portNumberGt:
+                            type: integer
+                            minimum: 1
+                            maximum: 65534
+                            description: Match only packets with a greater port number
+                          portNumberLt:
+                            type: integer
+                            minimum: 2
+                            maximum: 65535
+                            description: Match only packets with a lower port number
+                          portNumberRangeStart:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets in the range of port numbers (Starting Port
+                              Number)
+                          portNumberRangeEnd:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Ending Port Number  
+                      destination:
+                        type: object
+                        properties:
+                          any:
+                            type: integer
+                            default: 0
+                            description: Any destination host
+                          network:
+                            type: string
+                            description: Specify the ip address and cidr 
+                          portNumberEq:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets on a given destination port (port number)
+                          portNumberGt:
+                            type: integer
+                            minimum: 1
+                            maximum: 65534
+                            description: Match only packets with a greater port number
+                          portNumberLt:
+                            type: integer
+                            minimum: 2
+                            maximum: 65535
+                            description: Match only packets with a lesser port number
+                          portNumberRangeStart:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Match only packets in the range of port numbers (Starting
+                              Destination Port Number)
+                          portNumberRangeEnd:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                            description: Ending Destination Port Number
+              required:
+              - id  
+
+            status:
+              type: object
+              properties:
+                state:
+                  type: string            
+                        
+      additionalPrinterColumns:
+        - name: id
+          type: string
+          jsonPath: .spec.id
+        - name: Status
+          type: string
+          jsonPath: .status.state
+  names:
+    kind: AccessListExtended
+    plural: accesslistextendeds
+    singular: accesslistextended
+    shortNames:
+      - a10acle
+  scope: Namespaced
