@@ -39,8 +39,8 @@ spec:
                         description: Access list entry comment (Notes for this ACL)
                       action:
                         type: string
-                        description: "'deny': Deny; 'permit': Permit; 'l3-vlan-fwd-disable': Disable L3
-                          forwarding between VLANs;"
+                        description: "'deny': Deny; 'permit': Permit; 'l3-vlan-fwd-disable': Disable
+                          L3forwarding between VLANs;"
                         enum:
                           - deny
                           - permit
@@ -88,7 +88,7 @@ spec:
                             type: integer
                             minimum: 1
                             maximum: 65535
-                            description: Ending Port Number  
+                            description: Ending Port Number
                       destination:
                         type: object
                         properties:
@@ -98,7 +98,7 @@ spec:
                             description: Any destination host
                           network:
                             type: string
-                            description: Specify the ip address and cidr 
+                            description: Specify the ip address and cidr
                           portNumberEq:
                             type: integer
                             minimum: 1
@@ -126,14 +126,16 @@ spec:
                             maximum: 65535
                             description: Ending Destination Port Number
               required:
-              - id  
-
+                - id
             status:
               type: object
               properties:
                 state:
-                  type: string            
-                        
+                  type: string
+                attachedToVip:
+                  type: boolean
+      subresources:
+        status: {}
       additionalPrinterColumns:
         - name: id
           type: string
@@ -141,6 +143,9 @@ spec:
         - name: Status
           type: string
           jsonPath: .status.state
+        - name: AttachedToVip
+          type: boolean
+          jsonPath: .status.attachedToVip
   names:
     kind: AccessListExtended
     plural: accesslistextendeds
