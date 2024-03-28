@@ -30,7 +30,7 @@ spec:
                       seqNum:
                         type: integer
                         minimum: 1
-                        maximum: 8192
+                        maximum: 8191
                         description: Sequence number
                       remark:
                         type: string
