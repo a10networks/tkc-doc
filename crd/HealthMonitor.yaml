@@ -39,6 +39,7 @@ spec:
                 - http
                 - https
                 - icmp
+                - udp
                 description: "Specify health monitor protocol type"
               port:
                 type: integer
@@ -86,6 +87,11 @@ spec:
               httpTextRegex:
                 type: string
                 description: "Specify the expecting response content regular expression for http/https health monitor"
+              overridePort:
+                type: integer
+                minimum: 0
+                maximum: 65535
+                description: "Specify override-port number"
               status:
                 type: string
                 default: "NoController"
