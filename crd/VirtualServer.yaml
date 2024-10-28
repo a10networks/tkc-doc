@@ -25,6 +25,11 @@ spec:
                 acl-id:
                   type: integer
                   description: Specify the Access list ID
+                vrid:
+                  description: "Join a vrrp group (Specify ha VRRP-A vrid)"
+                  type: integer
+                  minimum: 1
+                  maximum: 31
             status:
               type: object
               properties:
@@ -69,6 +74,11 @@ spec:
                 acl-id:
                   type: integer
                   description: Specify the Access list ID
+                vrid:
+                  description: "Join a vrrp group (Specify ha VRRP-A vrid)"
+                  type: integer
+                  minimum: 1
+                  maximum: 31
             status:
               type: object
               properties:

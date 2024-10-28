@@ -1,0 +1,124 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templateudps.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  scope: Namespaced
+  names:
+    plural: templateudps
+    singular: templateudp
+    kind: TemplateUdp
+    shortNames:
+      - a10tempudp
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                name:
+                  type: string
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the Template UDP Name
+                idleTimeout:
+                  type: number
+                  minimum: 1
+                  maximum: 2097151
+                  default: 120
+                  description: Idle Timeout value (Interval of 60 seconds), default 120 seconds
+                    (idle timeout in second, default 120)
+                qos:
+                  type: number
+                  minimum: 1
+                  maximum: 63
+                  description: QOS level (number)
+                statelessConnTimeout:
+                  type: number
+                  minimum: 5
+                  maximum: 120
+                  default: 120
+                  description: Stateless Current Connection Timeout value (5 - 120 seconds) (idle
+                    timeout in second, default 120)
+                age:
+                  type: object
+                  properties:
+                    short:
+                      type: boolean
+                      default: false
+                      description: Short lived session  (mutual exclusive with Immediate)
+                    immediate:
+                      type: boolean
+                      default: false
+                      description: Immediate Removal after Transaction (mutual exclusive with Short)
+                    duration:
+                      type: number
+                      minimum: 1
+                      maximum: 31
+                      description: short age (in sec), default is 31
+                ifServerDown:
+                  type: object
+                  properties:
+                    reselect:
+                      type: boolean
+                      default: false
+                      description: re-select another server if service port is down
+                    disableClearSession:
+                      type: boolean
+                      default: false
+                      description: Disable immediate clearing of session
+                radiusLb:
+                  type: object
+                  properties:
+                    methodHashType:
+                      type: string
+                      description: "'ip': IP-Hash; 'ipv6': IPv6-Hash; "
+                      enum:
+                        - ip
+                        - ipv6
+                    avp:
+                      type: string
+                      format: enum
+                      description: "Specify the Radius attribute AVP number that will be used for IP
+                        hashing.'4': NAS-IP-address,'8': Framed-IP-Address"
+                      enum:
+                        - "4"
+                        - "8"
+                    v6avp:
+                      type: string
+                      description: "'168': Framed-IPv6-Address; '97':
+                        Framed-IPv6-PrefixFramed-IPv6-Prefix; "
+                      enum:
+                        - "168"
+                        - "97"
+                userTag:
+                  type: string
+                  description: Custom User Tag
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+        - name: templateName
+          type: string
+          description: Template UDP name
+          jsonPath: .spec.name
+        - name: status
+          type: string
+          jsonPath: .status.state
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp

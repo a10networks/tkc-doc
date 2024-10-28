@@ -46,6 +46,17 @@ spec:
                   maximum: 20
                   default: 5
                   description: "SYN Retry Numbers" 
+                finTimeout:
+                  description: "FIN timeout (sec), default is disabled (number)"
+                  type: integer
+                  minimum: 1
+                  maximum: 60
+                resetFwd:
+                  description: "Send reset to server if error happens"
+                  type: boolean
+                resetRev:
+                  description: "Send reset to client if error happens"
+                  type: boolean
               required:
                 - name         
             status:

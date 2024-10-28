@@ -1,3 +1,4 @@
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -10,112 +11,236 @@ spec:
     singular: healthmonitor
     kind: HealthMonitor
     shortNames:
-    - a10hm
+      - a10hm
   versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          metadata:
-            type: object
-            properties:
-              name:
-                type: string
-          spec:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify health monitor name"
-              type:
-                type: string
-                enum:
-                - tcp
-                - http
-                - https
-                - icmp
-                - udp
-                description: "Specify health monitor protocol type"
-              port:
-                type: integer
-                minimum: 0
-                maximum: 65535
-                description: "Specify health monitor port number"
-              retry:
-                type: integer
-                minimum: 1
-                maximum: 10
-                description: "Specify the max retry for health monitor"
-              interval:
-                type: integer
-                minimum: 1
-                maximum: 180
-                description: "Specify the retry intreval for health monitor"
-              timeout:
-                type: integer
-                minimum: 1
-                maximum: 180
-                description: "Specify the timeout for health monitor"
-              httpHost:
-                type: string
-                description: "Specify the Host for http/https health monitor"
-              httpUrl:
-                type: string
-                description: "Specify the URL for http/https health monitor"
-              httpMethod:
-                type: string
-                enum:
-                - GET
-                - HEAD
-                description: "Specify the method for http/https health monitor"
-              httpCode:
-                type: integer
-                minimum: 0
-                maximum: 1000
-                description: "Specify the expecting status code for http/https health monitor"
-              httpCodeRegex:
-                type: string
-                description: "Specify the expecting status code regular expression for http/https health monitor"
-              httpText:
-                type: string
-                description: "Specify the expecting response content for http/https health monitor"
-              httpTextRegex:
-                type: string
-                description: "Specify the expecting response content regular expression for http/https health monitor"
-              overridePort:
-                type: integer
-                minimum: 0
-                maximum: 65535
-                description: "Specify override-port number"
-              status:
-                type: string
-                default: "NoController"
-            required:
-              - name
-              - type
-    additionalPrinterColumns:
-    - name: name
-      type: string
-      description: The Health Monitor Name
-      jsonPath: .spec.name
-    - name: status
-      type: string
-      jsonPath: .spec.status
-    - name: type
-      type: string
-      description: The Health Monitor Type
-      jsonPath: .spec.type
-    - name: host
-      type: string
-      jsonPath: .spec.httpHost
-    - name: url
-      type: string
-      jsonPath: .spec.httpUrl
-    - name: code
-      type: integer
-      jsonPath: .spec.httpCode
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                name:
+                  type: string
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 63
+                  description: Specify health monitor name
+                type:
+                  type: string
+                  enum:
+                    - tcp
+                    - http
+                    - https
+                    - icmp
+                    - udp
+                    - dns
+                  description: Specify health monitor protocol type
+                port:
+                  type: integer
+                  minimum: 0
+                  maximum: 65535
+                  description: Specify health monitor port number
+                retry:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  description: Specify the max retry for health monitor
+                interval:
+                  type: integer
+                  minimum: 1
+                  maximum: 180
+                  description: Specify the retry intreval for health monitor
+                timeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 180
+                  description: Specify the timeout for health monitor
+                httpHost:
+                  type: string
+                  description: Specify the Host for http/https health monitor
+                httpUrl:
+                  type: string
+                  description: Specify the URL for http/https health monitor
+                httpMethod:
+                  type: string
+                  enum:
+                    - GET
+                    - HEAD
+                  description: Specify the method for http/https health monitor
+                httpCode:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                  description: Specify the expecting status code for http/https health monitor
+                httpCodeRegex:
+                  type: string
+                  description: Specify the expecting status code regular expression for http/https
+                    health monitor
+                httpText:
+                  type: string
+                  description: Specify the expecting response content for http/https health
+                    monitor
+                httpTextRegex:
+                  type: string
+                  description: Specify the expecting response content regular expression for
+                    http/https health monitor
+                overridePort:
+                  type: integer
+                  minimum: 0
+                  maximum: 65535
+                  description: Specify override-port number
+                dns:
+                  type: integer
+                  description: DNS type
+                dnsIPv4Addr:
+                  type: string
+                  description: Specify IPv4 address
+                dnsIPv6Addr:
+                  type: string
+                  description: Specify IPv6 address
+                dnsIPv4Port:
+                  type: integer
+                  minimum: 1
+                  maximum: 65534
+                  description: Specify DNS port, default is 53 (DNS Port(default 53))
+                dnsIPv4Response:
+                  type: string
+                  minLength: 1
+                  maxLength: 31
+                  description: Specify response code range (e.g. 0,1-5) (Format is xx,xx-xx (xx
+                          between [0,15]))
+                dnsIPv4Fqdn:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: Specify fully qualified domain name expected in DNS response answer
+                dnsIPv4Recurse:
+                  type: string
+                  description: "'enabled’: Set the recursion bit; 'disabled’: Clear the recursion
+                    bit;"
+                  enum:
+                    - enabled
+                    - disabled
+                dnsIPv4Tcp:
+                  type: integer
+                  description: Configure DNS transport over TCP, default is UDP
+                dnsIPv6Port:
+                  type: integer
+                  minimum: 1
+                  maximum: 65534
+                  description: Specify DNS port, default is 53 (DNS Port(default 53))
+                dnsIPv6Response:
+                  type: string
+                  minLength: 1
+                  maxLength: 31
+                  description: Specify response code range (e.g. 0,1-5) (Format is xx,xx-xx (xx between [0,15]))
+                dnsIPv6Fqdn:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: Specify fully qualified domain name expected in DNS response answer
+                dnsIPv6Recurse:
+                  type: string
+                  description: "'enabled’: Set the recursion bit; 'disabled’: Clear the recursion
+                    bit;"
+                  enum:
+                    - enabled
+                    - disabled
+                dnsIPv6Tcp:
+                  type: integer
+                  description: Configure DNS transport over TCP, default is UDP
+                dnsDomain:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: Specify fully qualified domain name of the host
+                dnsDomainPort:
+                  type: integer
+                  minimum: 1
+                  maximum: 65534
+                  description: Specify DNS port, default is 53 (DNS Port(default 53))
+                dnsDomainType:
+                  type: string
+                  description: "'A’: Used for storing Ipv4 address (default); 'CNAME’: Canonical
+                    name for a DNS alias; 'SOA’: Start of authority; 'PTR’:
+                    Domain name pointer; 'MX’: Mail exchanger; 'TXT’: Text
+                    string; 'AAAA’: Used for storing Ipv6 128-bits address;"
+                  enum:
+                    - A
+                    - CNAME
+                    - SOA
+                    - PTR
+                    - MX
+                    - TXT
+                    - AAAA
+                dnsDomainResponse:
+                  type: string
+                  minLength: 1
+                  maxLength: 31
+                  description: Specify response code range (e.g. 0,1-5) (Format is xx,xx-xx (xx
+                          between [0,15]))
+                dnsDomainFqdn:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  description: Specify fully qualified domain name expected in DNS response answer
+                dnsDomainIPv4:
+                  type: string
+                  description: Specify expected resolved IPv4 address
+                dnsDomainIPv6:
+                  type: string
+                  description: Specify expected resolved IPv6 address
+                dnsDomainRecurse:
+                  type: string
+                  description: "'enabled’: Set the recursion bit; 'disabled’: Clear the recursion
+                    bit;"
+                  enum:
+                    - enabled
+                    - disabled
+                dnsDomainTcp:
+                  type: integer
+                  description: Configure DNS transport over TCP, default is UDP
+                tcpPortHalfOpen:
+                  type: boolean
+                  description: Set TCP SYN check
+                strictRetryOnServerErrResp:
+                  type: boolean
+                  description: Require strictly retry
+                disableAfterDown:
+                  type: boolean
+                  description: Disable the target if health check failed
+                status:
+                  type: string
+                  default: NoController
+              required:
+                - name
+                - type
+      additionalPrinterColumns:
+        - name: name
+          type: string
+          description: The Health Monitor Name
+          jsonPath: .spec.name
+        - name: status
+          type: string
+          jsonPath: .spec.status
+        - name: type
+          type: string
+          description: The Health Monitor Type
+          jsonPath: .spec.type
+        - name: host
+          type: string
+          jsonPath: .spec.httpHost
+        - name: url
+          type: string
+          jsonPath: .spec.httpUrl
+        - name: code
+          type: integer
+          jsonPath: .spec.httpCode

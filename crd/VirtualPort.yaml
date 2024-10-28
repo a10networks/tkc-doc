@@ -163,6 +163,11 @@ spec:
                   minLength: 1
                   maxLength: 127
                   description: "Specify the external-service template for the virtual-port"
+                persistSourceIpTemplate:
+                  type: string
+                  minLength: 1
+                  maxLength: 127
+                  description: "Specify persist source-ip template for the virtual-port"
                 noDestNat:
                   type: integer
                   minimum: 0
@@ -178,6 +183,15 @@ spec:
                   minLength: 1
                   maxLength: 127
                   description: "Customized tag for virtual-port"
+                templateUdp:
+                  type: string
+                  description: "Specify Template UDP Name Reference"
+                haConnMirror:
+                  description: "Enable for HA Conn sync"
+                  type: boolean
+                onSyn:
+                  description: "Enable for HA Conn sync for l4 tcp sessions on SYN"
+                  type: boolean
                 status:
                   type: string
                   default: "NoController"

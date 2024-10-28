@@ -1,0 +1,144 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templatehttppolicies.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the HTTP Policy Name
+                cookieName:
+                  type: string
+                  description: Specify Cookie Namespaced
+                httpPolicyMatch:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      matchType:
+                        type: string
+                        description: "'cookie': cookie value match; 'host': hostname match; 'url': URL
+                          match; 'header-name': header name match;
+                          'header-value': header value match; "
+                        enum:
+                          - cookie
+                          - host
+                          - url
+                          - header-name
+                          - header-value
+                      patternType:
+                        type: string
+                        description: "contains': Select service group if URL string contains another
+                          string; 'ends-with': Select service group if URL
+                          string ends with another string; 'equals': Select
+                          service group if URL string equals another string;
+                          'starts-with': Select service group if URL string
+                          starts with another string; "
+                        enum:
+                          - contains
+                          - starts-with
+                          - ends-with
+                          - equals
+                      matchString:
+                        type: string
+                        description: URL string
+                      serviceGroup:
+                        description: Specify the Service Group Name
+                        type: string
+                geoLocationMatch:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      geoLocationName:
+                        type: string
+                        description: Specify Geo location Name
+                      serviceGroup:
+                        type: string
+                        description: Specify Service Group Name
+                      templateName:
+                        type: string
+                        description: Specify template name, supported is WAF template
+                multiMatchRuleList:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      multiMatchRuleName:
+                        type: string
+                        description: Specify a multi-match-rule name
+                      seqNumber:
+                        type: integer
+                        minimum: 1
+                        maximum: 8192
+                      matchType:
+                        type: string
+                        description: "'cookie': cookie value match; 'host': hostname match; 'url': URL
+                          match; 'header-name': header name match;
+                          'header-value': header value match; "
+                        enum:
+                          - cookie
+                          - host
+                          - url
+                          - header-name
+                          - header-value
+                      patternType:
+                        type: string
+                        description: "contains': Select service group if URL string contains another
+                          string; 'ends-with': Select service group if URL
+                          string ends with another string; 'equals': Select
+                          service group if URL string equals another string;
+                          'starts-with': Select service group if URL string
+                          starts with another string; "
+                        enum:
+                          - contains
+                          - starts-with
+                          - ends-with
+                          - equals
+                      matchString:
+                        type: string
+                        description: Specify string to match
+                      serviceGroup:
+                        type: string
+                        description: Specify Service Group Name
+                      wafTemplateName:
+                        type: string
+                        description: Specify WAF Teamplate Name
+                    required:
+                      - multiMatchRuleName
+                userTag:
+                  type: string
+                  description: Specify User Tag
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+        - name: Name
+          type: string
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
+  scope: Namespaced
+  names:
+    plural: templatehttppolicies
+    singular: tempaltehttppolicy
+    kind: TemplateHttpPolicy
+    shortNames:
+      - a10temphttppol

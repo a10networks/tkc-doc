@@ -38,6 +38,15 @@ spec:
                 user-tag:
                   type: string
                   description: "User Tag" 
+                ignore-tcp-msl:
+                  type: boolean
+                  description: Reclaim TCP resource immediately without MSL
+                conn-rate-limit-reset:
+                  type: boolean
+                  description: Send client reset when connection rate over limit
+                conn-rate-limit-no-logging:
+                  type: boolean
+                  description: Do not log connection over limit event
               required:
                 - name         
             status:

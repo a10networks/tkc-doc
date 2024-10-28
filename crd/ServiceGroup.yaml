@@ -113,6 +113,28 @@ spec:
                 minLength: 1
                 maxLength: 127
                 description: "Specify TemplatePort"
+              priorityAffinity:
+                description: "Priority affinity. Persist to the same priority if possible."
+                type: boolean
+              priorities:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    priority:
+                      description: "Priority option. Define different action for each priority node. (Priority in the Group)"
+                      type: integer
+                      minLength: 1
+                      maxLength: 16
+                    priorityAction:
+                      description: "‘drop’: Drop request when all priority nodes fail; ‘drop-if-exceed-limit’: Drop request when connection over limit; ‘proceed’: Proceed to next priority when all priority nodes fail(default); ‘reset’: Send client reset when all priority nodes fail; ‘reset-if-exceed-limit’: Send client reset when connection over limit;"
+                      type: string
+                      enum:
+                      - drop
+                      - drop-if-exceed-limit
+                      - proceed
+                      - reset
+                      - reset-if-exceed-limit
             required:
               - name
               - service

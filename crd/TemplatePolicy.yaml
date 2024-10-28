@@ -1,0 +1,196 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: templatepolicies.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Policy name
+                classList:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      classListName:
+                        type: string
+                        description: Class list name or geo-location-class-list name
+                      clientIpL3Dest:
+                        type: boolean
+                        description: Use destination IP as client IP address
+                      clientIpL7Header:
+                        type: boolean
+                        description: Use extract client IP address from L7 header
+                      headerName:
+                        type: string
+                        description: Specify L7 header name
+                      lidList:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            lidNum:
+                              type: integer
+                              description: Specify a limit ID
+                              minimum: 1
+                              maximum: 1023
+                            connLimit:
+                              type: integer
+                              description: Connection limit
+                              minimum: 0
+                              maximum: 1048575
+                            connRateLimit:
+                              type: integer
+                              description: Specify connection rate limit
+                              minimum: 1
+                              maximum: 2147483647
+                            connPer:
+                              type: integer
+                              description: Per (Specify interval in integer of 100ms)
+                              minimum: 1
+                              maximum: 65535
+                            requestLimit:
+                              type: integer
+                              description: Request limit (Specify request limit)
+                              minimum: 1
+                              maximum: 1048575
+                            requestRateLimit:
+                              type: integer
+                              description: Request rate limit (Specify request rate limit)
+                              minimum: 1
+                              maximum: 4294967295
+                            requestPer:
+                              type: integer
+                              description: Per (Specify interval in integer of 100ms)
+                              minimum: 1
+                              maximum: 65535
+                            bwRateLimit:
+                              type: integer
+                              description: Specify bandwidth rate limit (Bandwidth rate limit in bytes)
+                              minimum: 1
+                              maximum: 2147483647
+                            bwPer:
+                              type: integer
+                              description: Per (Specify interval in integer of 100ms)
+                              minimum: 1
+                              maximum: 65535
+                            overLimitAction:
+                              type: string
+                              description: "'forward': Forward the traffic even it exceeds limit; 'reset':
+                                Reset the connection when it exceeds limit; "
+                              enum:
+                                - forward
+                                - reset
+                            lockout:
+                              type: integer
+                              description: Don't accept any new connection for certain time (Lockout duration
+                                in minutes)
+                              minimum: 1
+                              maximum: 1023
+                            overLimitLog:
+                              type: boolean
+                              description: Log a message
+                            overLimitLogInterval:
+                              type: integer
+                              description: Specify log interval in minutes, by default system will log every
+                                over limit instance
+                              minimum: 1
+                              maximum: 255
+                            directServiceGroup:
+                              type: string
+                              description: Specify a service group (Specify the service group name)
+                              minimum: 1
+                              maximum: 127
+                            directActionLogInterval:
+                              type: integer
+                              minimum: 0
+                              maximum: 60
+                              description: Specify logging interval in minutes(default is 3)
+                            directActionLogFail:
+                              type: boolean
+                              description: Only log unsuccessful connections
+                            directAction:
+                              type: string
+                              description: "'drop': drop the packet; 'reset': Send reset back; "
+                              enum:
+                                - drop
+                                - reset
+                            directActionLog:
+                              type: boolean
+                              description: Configure logging
+                            responseCodeRateLimit:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  codeRangeStart:
+                                    type: integer
+                                    description: server response code range start
+                                    minimum: 100
+                                    maximum: 600
+                                  codeRangeEnd:
+                                    type: integer
+                                    description: server response code range end
+                                    minimum: 100
+                                    maximum: 600
+                                  threshold:
+                                    type: integer
+                                    description: the times of getting the response code
+                                    minimum: 1
+                                    maximum: 15
+                                  period:
+                                    type: integer
+                                    description: seconds
+                                    minimum: 1
+                                    maximum: 127
+                            dns64:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  disable:
+                                    type: boolean
+                                    description: Disable
+                                  exclusiveAnswer:
+                                    type: boolean
+                                    description: Exclusive Answer in DNS Response
+                                  prefix:
+                                    type: string
+                                    description: IPv6 prefix
+                            userTag:
+                              type: string
+                              description: Customized tag
+                              minimum: 1
+                              maximum: 127
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+        - name: Template Name
+          type: string
+          description: Policy template
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
+  names:
+    kind: TemplatePolicy
+    plural: templatepolicies
+    singular: templatepolicy
+    shortNames:
+      - a10tpolicy
+  scope: Namespaced

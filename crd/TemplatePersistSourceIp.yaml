@@ -1,0 +1,92 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+    name: templatepersistsourceips.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the persist source ip template Name
+                dontHonorConnLimit:
+                  type: boolean
+                  default: false
+                  description: Boolean option to don’t observe connection rate rules
+                enforceHigherPriority:
+                  type: boolean
+                  default: false
+                  description: Boolean option for enforcing to use high priority node if available
+                includeDstIp:
+                  type: boolean
+                  default: false
+                  description: Boolean option to include destination IP on the persist
+                includeSrcPort:
+                  type: boolean
+                  default: false
+                  description: Boolean option to include source port on the persist
+                matchType:
+                  type: string
+                  enum:
+                  - server
+                  - service-group
+                  description: Boolean option for Persistence type
+                ipv4Netmask:
+                  type: string
+                  default: "255.255.255.255"
+                  description: IPv4 subnet mask
+                ipv6Netmask:
+                  type: integer
+                  minimum: 1
+                  maximum: 128
+                  default: 128
+                  description: IPv6 subnet mask
+                primaryPort:
+                  type: integer
+                  minimum: 1
+                  maximum: 65534
+                  description: Primary port to create the persist session
+                scanAllMembers:
+                  type: boolean
+                  default: false
+                  description: Boolean option to Persist with SCAN of all members
+                timeout:
+                  type: integer
+                  default: 5
+                  minimum: 1
+                  maximum: 4321
+                  description: Persistence timeout (in minutes)
+                userTag:
+                  type: string
+                  description: Customized tag
+              required:
+               - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: Template Name
+        type: string
+        description: Persist Source-ip template
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state
+  names:
+    plural: templatepersistsourceips
+    singular: templatepersistsourceip
+    kind: TemplatePersistSourceIp
+    shortNames:
+    - a10tpersistsrcip
+  scope: Namespaced

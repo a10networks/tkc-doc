@@ -1,0 +1,139 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+    name: templatetcps.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the tcp template Name
+                aliveIfActive:
+                  type: boolean
+                  default: false
+                  description: Boolean option to keep connection alive if active traffic
+                deleteSessionOnServerDown:
+                  type: boolean
+                  default: false
+                  description: Boolean option to delete session if the server/port goes down (either disabled/hm down)
+                disable:
+                  type: boolean
+                  default: false
+                  description: Boolean option to send reset to client when server is disabled
+                down:
+                  type: boolean
+                  default: false
+                  description: Boolean option to send reset to client when server is down
+                forceDeleteTimeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 31
+                  description: The maximum time that a session can stay in the system before being delete (number in second)
+                halfCloseIdleTimeout:
+                  type: integer
+                  minimum: 60
+                  maximum: 120
+                  description: TCP Half Close Idle Timeout in second
+                halfOpenIdleTimeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 60
+                  description: TCP Half Open Idle Timeout in second
+                idleTimeout:
+                  type: integer
+                  minimum: 1
+                  maximum: 2097151
+                  default: 120
+                  description: Idle Timeout value in Interval of 60 seconds
+                initialWindowSize:
+                  type: integer
+                  minimum: 1
+                  maximum: 65535
+                  description: Option to set the initial window size
+                insertClientIp:
+                  type: boolean
+                  default: false
+                  description: Boolean option to Insert client ip into TCP option
+                lanFastAck:
+                  type: boolean
+                  default: false
+                  description: Boolean option to enable fast TCP ack on LAN             
+                logging:
+                  type: string
+                  enum:
+                  - init
+                  - term
+                  - both
+                  description: Logging type
+                proxyHeader:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      proxyHeaderAction:
+                        type: string
+                        description: Proxy header action
+                        enum:
+                        - insert
+                      proxyHeaderVersion:
+                        type: string
+                        description: Proxy header version
+                        enum:
+                        - v1
+                        - v2
+                qos:
+                  type: integer
+                  minimum: 1
+                  maximum: 63
+                  description: QOS level
+                reSelectIfServerDown:
+                  type: boolean
+                  default: false
+                  description: Boolean option to re-select another server if service port is down
+                resetFollwFin:
+                  type: boolean
+                  default: false
+                  description: Boolean option to send reset to client or server upon receiving first fin
+                resetForward:
+                  type: boolean
+                  default: false
+                  description: Boolean option to send reset to server if error happens
+                resetReverse:
+                  type: boolean
+                  default: false
+                  description: Boolean option to send reset to client if error happens
+                userTag:
+                  type: string
+                  description: Customized tag
+              required:
+               - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: Template Name
+        type: string
+        description: Tcp template
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state
+  names:
+    plural: templatetcps
+    singular: templatetcp
+    kind: TemplateTcp
+    shortNames:
+    - a10ttcp
+  scope: Namespaced

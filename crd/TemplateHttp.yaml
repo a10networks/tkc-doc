@@ -1,0 +1,87 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+    name: templatehttps.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the http template Name
+                urlSwitching:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        matchString:
+                          type: string
+                          description: URL String requested by client
+                        switchingType :
+                          type: string
+                          enum:
+                          - contains
+                          - ends-with
+                          - starts-with
+                          - equals
+                          - regex-match
+                          description: Supported options are contains, ends-with, equals, starts-with, regex-match
+                        serviceGroup:
+                          type: string
+                          description: Name of service-group where traffic to be redirected
+                hostSwitching:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                        matchString:
+                          type: string
+                          description: URL String requested by client
+                        switchingType :
+                          type: string
+                          description: Supported options are contains, ends-with, equals, starts-with, regex-match
+                        serviceGroup:
+                          type: string
+                          description: Name of service-group where traffic to be redirected
+                nonHttpBypass:
+                  type: boolean
+                  default: false
+                  description: Boolean option to bypass non-http traffic instead of dropping
+                bypassServiceGroup:
+                  type: string
+                  description: Service group for non-http traffic
+                requestLineCaseInsensitive:
+                  default: false
+                  type: boolean
+                  description: Boolean option to Parse http request line as case insensitive
+              required:
+               - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+      additionalPrinterColumns:
+      - name: Template Name
+        type: string
+        description: Http template
+        jsonPath: .spec.name
+      - name: Status
+        type: string
+        jsonPath: .status.state
+  names:
+    plural: templatehttps
+    singular: templatehttp
+    kind: TemplateHttp
+    shortNames:
+    - a10temphttp
+  scope: Namespaced
