@@ -115,7 +115,7 @@ spec:
                         description: Specify Service Group Name
                       wafTemplateName:
                         type: string
-                        description: Specify WAF Teamplate Name
+                        description: Specify WAF Teamplate Name (applicable to acos version < 6.0)
                     required:
                       - multiMatchRuleName
                 userTag:

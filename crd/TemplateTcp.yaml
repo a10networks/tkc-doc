@@ -26,11 +26,11 @@ spec:
                   type: boolean
                   default: false
                   description: Boolean option to delete session if the server/port goes down (either disabled/hm down)
-                disable:
+                resetRevForServerDisabled:
                   type: boolean
                   default: false
                   description: Boolean option to send reset to client when server is disabled
-                down:
+                resetRevForServerDown:
                   type: boolean
                   default: false
                   description: Boolean option to send reset to client when server is down
@@ -52,7 +52,7 @@ spec:
                 idleTimeout:
                   type: integer
                   minimum: 1
-                  maximum: 2097151
+                  maximum: 2097120
                   default: 120
                   description: Idle Timeout value in Interval of 60 seconds
                 initialWindowSize:

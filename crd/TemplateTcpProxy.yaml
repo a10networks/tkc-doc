@@ -26,7 +26,7 @@ spec:
                 idleTimeout:
                   type: integer
                   minimum: 1
-                  maximum: 2097151
+                  maximum: 2097120
                   default: 600
                   description: "Idle Timeout in interval of 60 seconds"
                 halfCloseIdleTimeout:
