@@ -40,6 +40,11 @@ spec:
                   items:
                     type: string
                   description: ACOS cli commands for deleting config from ACOS on resource deletion
+                cliDeployTimeout:
+                  type: number
+                  minimum: 3
+                  maximum: 600
+                  description: Timeout period to execute commands in deployment config file
   scope: Namespaced
   names:
     plural: deploymentconfigs

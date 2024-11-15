@@ -3502,14 +3502,27 @@ spec:
                   items:
                     type: string
                   description: ACOS cli commands for creating config on ACOS
-                acosResourceConfigForDeletion:
+                acosResourceConfigCleanup:
                   type: array
                   x-kubernetes-validations:
                     - message: Commands cannot be updated. Please delete and create back.
                       rule: self == oldSelf
                   items:
                     type: string
-                  description: ACOS cli commands for deleting config from ACOS
+                  description: ACOS cli commands for deleting config from ACOS on resource creation
+                acosResourceConfigRemoval:
+                  type: array
+                  x-kubernetes-validations:
+                    - message: Commands cannot be updated. Please delete and create back.
+                      rule: self == oldSelf
+                  items:
+                    type: string
+                  description: ACOS cli commands for deleting config from ACOS on resource deletion
+                cliDeployTimeout:
+                  type: number
+                  minimum: 3
+                  maximum: 600
+                  description: Timeout period to execute commands in deployment config file
   scope: Namespaced
   names:
     plural: deploymentconfigs
