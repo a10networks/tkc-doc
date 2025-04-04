@@ -52,7 +52,13 @@ spec:
                 minimum: 0
                 maximum: 1
                 default: 0
-                description: "Disable health monitor for the service-group"
+                description: "Disable health monitor for the service-group" 
+              healthCheckSrvPortDisable:
+                type: integer
+                minimum: 0
+                maximum: 1
+                default: 0
+                description: Enable/Disable Health Check for SLB Server port
               loadBalanceMethod:
                 type: string
                 enum:

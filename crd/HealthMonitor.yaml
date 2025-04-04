@@ -46,7 +46,7 @@ spec:
                 port:
                   type: integer
                   minimum: 0
-                  maximum: 65535
+                  maximum: 65534
                   description: Specify health monitor port number
                 retry:
                   type: integer
@@ -95,7 +95,7 @@ spec:
                 overridePort:
                   type: integer
                   minimum: 0
-                  maximum: 65535
+                  maximum: 65534
                   description: Specify override-port number
                 dns:
                   type: integer
@@ -200,8 +200,7 @@ spec:
                   description: Specify expected resolved IPv6 address
                 dnsDomainRecurse:
                   type: string
-                  description: "'enabled’: Set the recursion bit; 'disabled’: Clear the recursion
-                    bit;"
+                  description: "'enabled’: Set the recursion bit; 'disabled’: Clear the recursion bit;"
                   enum:
                     - enabled
                     - disabled

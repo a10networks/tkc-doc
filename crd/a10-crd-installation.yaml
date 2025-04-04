@@ -1605,6 +1605,12 @@ spec:
                   maximum: 1
                   default: 0
                   description: Disable health monitor for the service-group
+                healthCheckSrvPortDisable:
+                  type: integer
+                  minimum: 0
+                  maximum: 1
+                  default: 0
+                  description: Enable/Disable Health Check for SLB Server port
                 loadBalanceMethod:
                   type: string
                   enum:
@@ -1733,6 +1739,9 @@ spec:
                 ip-pool:
                   type: string
                   description: Specify the Calico IPPool name (since TKC v2.0)
+                a10-ip-pool:
+                  type: string
+                  description: Specify the A10 IPPool name (Since TKC v2.4)
                 acl-id:
                   type: integer
                   description: Specify the Access list ID
@@ -1783,6 +1792,9 @@ spec:
                 ip-pool:
                   type: string
                   description: Specify the Calico IPPool name (since TKC v2.0)
+                a10-ip-pool:
+                  type: string
+                  description: Specify the A10 IPPool name (Since TKC v2.4)
                 acl-id:
                   type: integer
                   description: Specify the Access list ID
@@ -2410,7 +2422,6 @@ spec:
                 rate-interval:
                   description: "'100ms': Use 100 ms as sampling interval; 'second': Use 1 second
                     as sampling interval; "
-                  default: second
                   enum:
                     - 100ms
                     - second
@@ -3800,4 +3811,53 @@ spec:
     shortNames:
       - a10temphttppol
 
-
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: a10ippools.tkc.a10networks.com
+spec:
+  group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                subnet: 
+                  type: string
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                  default: NoController
+                used:
+                  type: string
+                  description: Used address list
+      additionalPrinterColumns:
+      - name: Name
+        type: string
+        description: Specify the IP pool name
+        jsonPath: .spec.name
+      - name: Subnet
+        type: string
+        description: Specify the Subnet 
+        jsonPath: .spec.subnet
+      - name: Status
+        type: string
+        jsonPath: .status.state
+  names:
+    kind: A10IPPool
+    plural: a10ippools
+    singular: a10ippool
+    shortNames:
+    - a10ippool
+  scope: Cluster

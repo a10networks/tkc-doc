@@ -22,6 +22,9 @@ spec:
                 ip-pool:
                   type: string
                   description: Specify the Calico IPPool name (since TKC v2.0)
+                a10-ip-pool:
+                  type: string
+                  description: Specify the A10 IPPool name (Since TKC v2.4)
                 acl-id:
                   type: integer
                   description: Specify the Access list ID
@@ -71,6 +74,9 @@ spec:
                 ip-pool:
                   type: string
                   description: Specify the Calico IPPool name (since TKC v2.0)
+                a10-ip-pool:
+                  type: string
+                  description: Specify the A10 IPPool name (Since TKC v2.4)
                 acl-id:
                   type: integer
                   description: Specify the Access list ID

@@ -144,7 +144,6 @@ spec:
                 rate-interval:
                   description: '''100ms'': Use 100 ms as sampling interval; ''second'': Use 1 second
                     as sampling interval; '
-                  default: second  
                   enum:
                   - 100ms
                   - second
