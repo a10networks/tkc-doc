@@ -45,7 +45,7 @@ spec:
                   description: Specify health monitor protocol type
                 port:
                   type: integer
-                  minimum: 0
+                  minimum: 1
                   maximum: 65534
                   description: Specify health monitor port number
                 retry:
@@ -94,7 +94,7 @@ spec:
                     http/https health monitor
                 overridePort:
                   type: integer
-                  minimum: 0
+                  minimum: 1
                   maximum: 65534
                   description: Specify override-port number
                 dns:
