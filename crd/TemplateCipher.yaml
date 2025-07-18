@@ -1,136 +1,210 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: servicegroups.tkc.a10networks.com
+  name: templateciphers.tkc.a10networks.com
 spec:
   group: tkc.a10networks.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the name for cipher template
+                user-tag:
+                  type: string
+                  description: Specify the customized tag for cipher template
+                cipher-cfg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cipher-suite:
+                        type: string
+                        enum:
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SM3
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
+                        description: Specify the cipher-suite name
+                      priority:
+                        type: integer
+                        default: 1
+                        description: Specify the priority for this cipher-suite
+                cipher13-cfg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cipher13-suite:
+                        type: string
+                        enum:
+                          - TLS_AES_256_GCM_SHA384
+                          - TLS_CHACHA20_POLY1305_SHA256
+                          - TLS_AES_128_GCM_SHA256
+                        description: Specify the cipher-suite name
+                      priority:
+                        type: integer
+                        default: 1
+                        description: Specify the priority for this cipher-suite
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                  default: NoController
+      additionalPrinterColumns:
+        - name: Name
+          type: string
+          description: Template Cipher Name
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
+    - name: v1alpha1
+      served: true
+      storage: false
+      deprecated: true
+      deprecationWarning: tkc.a10networks.com/v1alpha1 TemplateCipher
+        deprecated.Please consider migrate to tkc.a10networks.com/v1 Template
+        Cipher
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Specify the name for cipher template
+                user-tag:
+                  type: string
+                  description: Specify the customized tag for cipher template
+                cipher-cfg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cipher-suite:
+                        type: string
+                        enum:
+                          - SSL3_RSA_DES_192_CBC3_SHA
+                          - SSL3_RSA_RC4_128_MD5
+                          - SSL3_RSA_RC4_128_SHA
+                          - TLS1_RSA_AES_128_SHA
+                          - TLS1_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_SHA256
+                          - TLS1_RSA_AES_256_SHA256
+                          - TLS1_DHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_DHE_RSA_AES_128_SHA
+                          - TLS1_DHE_RSA_AES_128_SHA256
+                          - TLS1_DHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_DHE_RSA_AES_256_SHA
+                          - TLS1_DHE_RSA_AES_256_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA
+                          - TLS1_ECDHE_ECDSA_AES_128_SHA256
+                          - TLS1_ECDHE_ECDSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA
+                          - TLS1_ECDHE_RSA_AES_128_GCM_SHA256
+                          - TLS1_ECDHE_RSA_AES_128_SHA
+                          - TLS1_ECDHE_RSA_AES_128_SHA256
+                          - TLS1_ECDHE_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA
+                          - TLS1_RSA_AES_128_GCM_SHA256
+                          - TLS1_RSA_AES_256_GCM_SHA384
+                          - TLS1_ECDHE_RSA_AES_256_SHA384
+                          - TLS1_ECDHE_ECDSA_AES_256_SHA384
+                          - TLS1_ECDHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_ECDSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_DHE_RSA_CHACHA20_POLY1305_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SM3
+                          - TLS1_ECDHE_SM2_WITH_SMS4_SHA256
+                          - TLS1_ECDHE_SM2_WITH_SMS4_GCM_SM3
+                        description: Specify the cipher-suite name
+                      priority:
+                        type: integer
+                        default: 1
+                        description: Specify the priority for this cipher-suite
+                cipher13-cfg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      cipher13-suite:
+                        type: string
+                        enum:
+                          - TLS_AES_256_GCM_SHA384
+                          - TLS_CHACHA20_POLY1305_SHA256
+                          - TLS_AES_128_GCM_SHA256
+                        description: Specify the cipher-suite name
+                      priority:
+                        type: integer
+                        default: 1
+                        description: Specify the priority for this cipher-suite
+              required:
+                - name
+            status:
+              type: object
+              properties:
+                state:
+                  type: string
+                  default: NoController
+      additionalPrinterColumns:
+        - name: Name
+          type: string
+          description: Template Cipher Name
+          jsonPath: .spec.name
+        - name: Status
+          type: string
+          jsonPath: .status.state
+  conversion:
+    strategy: None
   scope: Namespaced
   names:
-    plural: servicegroups
-    singular: servicegroup
-    kind: ServiceGroup
+    plural: templateciphers
+    singular: templatecipher
+    kind: TemplateCipher
     shortNames:
-    - a10sg
-  versions:
-  - name: v1
-    served: true
-    storage: true
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          metadata:
-            type: object
-            properties:
-              name:
-                type: string
-          spec:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-                maxLength: 127
-                description: "Specify the service-group name"
-              service:
-                type: string
-                description: "Specify k8s service that bind to the service-group"
-              protocol:
-                type: string
-                enum:
-                - tcp
-                - udp
-                default: "tcp"
-                description: "Specify the service-group protocol"
-              healthCheck:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the health monitor for the service-group"
-              healthCheckDisable:
-                type: integer
-                minimum: 0
-                maximum: 1
-                default: 0
-                description: "Disable health monitor for the service-group"
-              loadBalanceMethod:
-                type: string
-                enum:
-                - dst-ip-hash
-                - dst-ip-only-hash
-                - fastest-response
-                - least-request
-                - src-ip-hash
-                - src-ip-only-hash
-                - weighted-rr
-                - service-weighted-rr
-                - round-robin
-                - round-robin-strict
-                - odd-even-hash
-                - service-least-connection
-                - least-connection
-                - weighted-least-connection
-                - service-weighted-least-connection
-                default: "round-robin"
-                description: "Specify the loadbalance method for the service-group"
-              serverHealthCheck:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the health monitor for the servers in this service-group"
-              templateServer:
-                type: string
-                minLength: 1
-                maxLength: 127
-                description: "Specify Template SLB Server"
-              status:
-                type: string
-                default: "NoController"
-              pseudoRoundRobin:
-                type: integer
-                minimum: 0
-                maximum: 1
-                default: 0
-                description: "Select the oldest node for sub-select"
-              resetOnServerSelectionFail:
-                type: integer
-                minimum: 0
-                maximum: 1
-                default: 0
-                description: "Send reset to client if server selection fails"
-              healthCheckFollowPort:
-                type: integer
-                minimum: 1
-                maximum: 65534
-                description: "Specify which port to follow for health status (Port Number)"
-              portHealthCheck:
-                type: string
-                minLength: 1
-                maxLength: 63
-                description: "Specify the health monitor for the server port"
-              templatePort:
-                type: string
-                minLength: 1
-                maxLength: 127
-                description: "Specify TemplatePort"
-            required:
-              - name
-              - service
-    additionalPrinterColumns:
-    - name: name
-      type: string
-      description: The service-group Name
-      jsonPath: .spec.name
-    - name: status
-      type: string
-      jsonPath: .spec.status
-    - name: service
-      type: string
-      jsonPath: .spec.service
-    - name: protocol
-      type: string
-      jsonPath: .spec.protocol
-    - name: method
-      type: string
-      jsonPath: .spec.loadBalanceMethod
-
+      - a10tc
